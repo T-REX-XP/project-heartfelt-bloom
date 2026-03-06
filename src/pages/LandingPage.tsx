@@ -95,7 +95,7 @@ const LandingPage = () => {
                 </Button>
               </Link>
               <a href="#features">
-                <Button variant="outline" size="lg" className="px-8 text-base">
+                <Button variant="outline" size="lg" className="px-8 text-base border-border text-foreground hover:bg-accent">
                   See How It Works
                 </Button>
               </a>
