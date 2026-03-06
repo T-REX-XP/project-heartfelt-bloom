@@ -77,6 +77,7 @@ const App = () => (
             <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /></LeadLayout>} />
             <Route path="/lead/copilot" element={<LeadLayout><CopilotChat /></LeadLayout>} />
             <Route path="/lead/settings" element={<LeadLayout><SettingsPage /></LeadLayout>} />
+            <Route path="/admin/architecture" element={<ProtectedRoute allowedRoles={['admin']}><AppShell><ArchitecturePage /></AppShell></ProtectedRoute>} />
 
             {/* Team Member */}
             <Route path="/member/dashboard" element={<MemberLayout><MemberDashboard /></MemberLayout>} />
