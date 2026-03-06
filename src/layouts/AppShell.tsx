@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Bell, Users, BarChart3, Brain, ShieldAlert,
   MessageSquare, Settings, GraduationCap, BookOpen, Target,
-  ClipboardList, Bot, LogOut, ChevronLeft, ChevronRight, Zap, CalendarCheck
+  ClipboardList, Bot, LogOut, ChevronLeft, ChevronRight, Zap, CalendarCheck,
+  Network
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
