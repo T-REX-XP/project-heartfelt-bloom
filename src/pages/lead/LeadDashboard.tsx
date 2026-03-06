@@ -109,10 +109,10 @@ const LeadDashboard = () => {
           <div className="mt-6">
             <h3 className="text-sm font-medium text-muted-foreground mb-3">Upcoming 1:1 Prep Available</h3>
             {atRiskEmployees.map(emp => (
-              <Link key={emp.id} to={`/lead/conversation-prep/${emp.id}`}>
+              <Link key={emp.id} to={`/lead/one-on-ones?employee=${emp.id}`}>
                 <div className="glass rounded-lg p-3 mb-2 flex items-center justify-between hover:bg-card/80 transition-colors">
                   <span className="text-sm text-foreground">{emp.name}</span>
-                  <span className="text-xs text-primary">Prepare →</span>
+                  <span className="text-xs text-primary">Prepare 1:1 →</span>
                 </div>
               </Link>
             ))}
