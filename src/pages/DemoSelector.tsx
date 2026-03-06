@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Zap, Users, User, Shield } from 'lucide-react';
+import { Zap, Users, User, Shield, ChevronLeft } from 'lucide-react';
 import { useAuth } from '@/store/AuthContext';
 import type { Role } from '@/domain/types';
 
@@ -20,7 +20,14 @@ const DemoSelector = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background dark flex items-center justify-center mesh-bg">
+    <div className="min-h-screen bg-background dark flex items-center justify-center mesh-bg relative">
+      <button
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+      >
+        <ChevronLeft className="w-4 h-4" />
+        Back
+      </button>
       <div className="max-w-3xl mx-auto px-6 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center justify-center gap-2 mb-8">
