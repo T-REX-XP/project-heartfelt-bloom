@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import type { Signal } from '@/domain/types';
 import { AlertTriangle, AlertCircle, Info, CheckCircle, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -10,9 +11,16 @@ const severityConfig = {
   positive: { icon: CheckCircle, color: 'text-logiq-emerald', bg: 'bg-logiq-emerald/10', border: 'border-logiq-emerald/30' },
 };
 
+function getActionUrl(signal: Signal): string | null {
+  if (!signal.employeeId) return null;
+  if (signal.actionLabel === 'Prepare 1:1') return `/lead/conversation-prep/${signal.employeeId}`;
+  return `/lead/team/${signal.employeeId}`;
+}
+
 const SignalCard = ({ signal, index = 0 }: { signal: Signal; index?: number }) => {
   const config = severityConfig[signal.severity];
   const Icon = config.icon;
+  const actionUrl = getActionUrl(signal);
 
   return (
     <motion.div
@@ -37,10 +45,10 @@ const SignalCard = ({ signal, index = 0 }: { signal: Signal; index?: number }) =
           <p className="text-sm text-muted-foreground leading-relaxed">{signal.description}</p>
           <div className="flex items-center justify-between mt-3">
             <span className="text-xs text-muted-foreground">{signal.timestamp}</span>
-            {signal.actionLabel && (
-              <button className="flex items-center gap-1 text-xs font-medium text-primary hover:underline">
+            {signal.actionLabel && actionUrl && (
+              <Link to={actionUrl} className="flex items-center gap-1 text-xs font-medium text-primary hover:underline">
                 {signal.actionLabel} <ArrowRight className="w-3 h-3" />
-              </button>
+              </Link>
             )}
           </div>
         </div>
