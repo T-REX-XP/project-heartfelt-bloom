@@ -95,6 +95,49 @@ export interface IDPGoal {
   skillArea: string;
 }
 
+export interface ProjectHistory {
+  id: string;
+  name: string;
+  role: string;
+  period: string;
+  status: 'completed' | 'active' | 'on-hold';
+  description: string;
+  technologies: string[];
+}
+
+export interface FeedbackEntry {
+  id: string;
+  from: string;
+  fromRole: string;
+  date: string;
+  type: 'peer' | 'manager' | '360' | 'self';
+  rating: number; // 1-5
+  summary: string;
+  strengths: string[];
+  growthAreas: string[];
+}
+
+export interface TrainingRecord {
+  id: string;
+  title: string;
+  provider: string;
+  type: 'course' | 'workshop' | 'certification' | 'conference';
+  status: 'completed' | 'in-progress' | 'planned';
+  startDate: string;
+  completedDate?: string;
+  hours: number;
+  skillArea: string;
+  score?: number;
+}
+
+export interface RoleHistory {
+  id: string;
+  title: string;
+  department: string;
+  period: string;
+  duration: string;
+}
+
 export interface Agent {
   id: string;
   name: string;

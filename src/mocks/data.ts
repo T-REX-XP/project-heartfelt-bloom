@@ -1,4 +1,4 @@
-import type { Employee, Signal, KPI, TeamSummary, ConversationPrep, LearningRecommendation, IDPGoal, Agent } from '@/domain/types';
+import type { Employee, Signal, KPI, TeamSummary, ConversationPrep, LearningRecommendation, IDPGoal, Agent, ProjectHistory, FeedbackEntry, TrainingRecord, RoleHistory } from '@/domain/types';
 
 export const agents: Agent[] = [
   { id: 'wellbeing-analyzer', name: 'Wellbeing & Risk Analyzer', type: 'analyzer', description: 'Monitors sick leave patterns, psychological safety signals, and work-life balance indicators.', icon: 'Heart' },
@@ -152,3 +152,106 @@ export const idpGoals: IDPGoal[] = [
   { id: 'g3', title: 'Contribute to Open Source', description: 'Make 5 meaningful contributions to team OSS projects', progress: 60, targetDate: '2026-04-30', status: 'on-track', skillArea: 'Community' },
   { id: 'g4', title: 'Leadership Readiness', description: 'Shadow team lead and facilitate 3 sprint retrospectives', progress: 80, targetDate: '2026-03-31', status: 'on-track', skillArea: 'Leadership' },
 ];
+
+// --- Employee profile enrichment data keyed by employee ID ---
+
+export const employeeProjects: Record<string, ProjectHistory[]> = {
+  alex: [
+    { id: 'p1', name: 'Customer Portal Redesign', role: 'Frontend Developer', period: 'Jan 2026 – Present', status: 'active', description: 'Leading the migration of the legacy customer portal to React/TypeScript with a modern design system.', technologies: ['React', 'TypeScript', 'Tailwind', 'REST APIs'] },
+    { id: 'p2', name: 'Payment Gateway Integration', role: 'Full-Stack Developer', period: 'Jul 2025 – Dec 2025', status: 'completed', description: 'Integrated Stripe and local payment providers into the checkout flow.', technologies: ['Node.js', 'TypeScript', 'Stripe API', 'PostgreSQL'] },
+    { id: 'p3', name: 'Internal CLI Tooling', role: 'Developer', period: 'Mar 2025 – Jun 2025', status: 'completed', description: 'Built internal CLI tools for automated code scaffolding and deployment pipelines.', technologies: ['Python', 'Click', 'Docker'] },
+  ],
+  sarah: [
+    { id: 'p4', name: 'Platform Microservices Migration', role: 'Tech Lead', period: 'Sep 2025 – Present', status: 'active', description: 'Driving the decomposition of the monolith into Go-based microservices with Kubernetes orchestration.', technologies: ['Go', 'Kubernetes', 'gRPC', 'PostgreSQL'] },
+    { id: 'p5', name: 'Observability Stack', role: 'Senior Developer', period: 'Mar 2025 – Aug 2025', status: 'completed', description: 'Designed and deployed end-to-end observability with distributed tracing and alerting.', technologies: ['Prometheus', 'Grafana', 'OpenTelemetry', 'Go'] },
+  ],
+  david: [
+    { id: 'p6', name: 'Infrastructure as Code Migration', role: 'Lead DevOps', period: 'Nov 2025 – Present', status: 'active', description: 'Migrating all infrastructure provisioning from manual scripts to Terraform modules.', technologies: ['Terraform', 'AWS', 'Docker', 'GitHub Actions'] },
+    { id: 'p7', name: 'Zero-Downtime Deployment Pipeline', role: 'DevOps Engineer', period: 'May 2025 – Oct 2025', status: 'completed', description: 'Implemented blue-green and canary deployment strategies for production services.', technologies: ['Kubernetes', 'ArgoCD', 'Helm', 'AWS EKS'] },
+  ],
+  lisa: [
+    { id: 'p8', name: 'E2E Test Automation Framework', role: 'QA Lead', period: 'Oct 2025 – Present', status: 'active', description: 'Building a comprehensive Cypress-based E2E test suite covering all critical user journeys.', technologies: ['Cypress', 'TypeScript', 'CI/CD', 'Docker'] },
+  ],
+  tom: [
+    { id: 'p9', name: 'Platform Architecture Review', role: 'Tech Lead', period: 'Jan 2026 – Present', status: 'active', description: 'Leading quarterly architecture reviews and technical debt reduction initiatives.', technologies: ['Java', 'AWS', 'System Design'] },
+  ],
+  emma: [
+    { id: 'p10', name: 'Design System Components', role: 'Frontend Developer', period: 'Dec 2025 – Present', status: 'active', description: 'Contributing React components to the shared design system library.', technologies: ['React', 'Storybook', 'CSS', 'TypeScript'] },
+  ],
+  jonas: [
+    { id: 'p11', name: 'Order Management API', role: 'Backend Developer', period: 'Nov 2025 – Present', status: 'active', description: 'Developing REST APIs for the new order management system.', technologies: ['Java', 'Spring Boot', 'PostgreSQL'] },
+  ],
+  maria: [
+    { id: 'p12', name: 'Product Analytics Dashboard', role: 'Product Owner', period: 'Oct 2025 – Present', status: 'active', description: 'Defining requirements and leading delivery of a real-time product analytics dashboard.', technologies: ['Figma', 'SQL', 'Mixpanel'] },
+  ],
+  priya: [
+    { id: 'p13', name: 'ML Prediction Pipeline', role: 'ML Engineer', period: 'Aug 2025 – Present', status: 'active', description: 'Building real-time prediction pipelines for customer churn and demand forecasting.', technologies: ['Python', 'FastAPI', 'TensorFlow', 'Airflow'] },
+  ],
+  kevin: [
+    { id: 'p14', name: 'Marketing Site Refresh', role: 'Junior Developer', period: 'Jan 2026 – Present', status: 'active', description: 'Implementing responsive pages for the company marketing website.', technologies: ['HTML', 'CSS', 'JavaScript'] },
+  ],
+};
+
+export const employeeFeedback: Record<string, FeedbackEntry[]> = {
+  alex: [
+    { id: 'f1', from: 'Tom Eriksson', fromRole: 'Tech Lead', date: '2026-02-15', type: 'manager', rating: 3, summary: 'Alex has strong technical fundamentals but recent engagement and delivery have declined. Needs support and re-motivation.', strengths: ['Clean code quality', 'TypeScript expertise', 'Collaborative in code reviews'], growthAreas: ['Proactive communication', 'Meeting deadlines', 'Self-care and work-life balance'] },
+    { id: 'f2', from: 'Sarah Park', fromRole: 'Senior Developer', date: '2026-01-20', type: 'peer', rating: 3, summary: 'Alex is talented but seems disengaged lately. When focused, produces excellent work. I\'d love to see more initiative.', strengths: ['React architecture knowledge', 'Debugging skills'], growthAreas: ['Taking ownership of features end-to-end', 'Asking for help earlier'] },
+    { id: 'f3', from: 'Emma Johnson', fromRole: 'Junior Developer', date: '2025-12-10', type: 'peer', rating: 4, summary: 'Alex helped me onboard and was very patient explaining the codebase. Great mentor when available.', strengths: ['Mentoring patience', 'Technical explanations'], growthAreas: ['Availability — sometimes hard to reach'] },
+    { id: 'f4', from: 'Alex Chen', fromRole: 'Self', date: '2026-02-01', type: 'self', rating: 2, summary: 'I feel overwhelmed and unmotivated. The workload feels unmanageable and I\'m not growing in the direction I want.', strengths: ['Still passionate about frontend'], growthAreas: ['Need clearer career path', 'Better work-life boundaries', 'Want more challenging technical work'] },
+  ],
+  sarah: [
+    { id: 'f5', from: 'Tom Eriksson', fromRole: 'Tech Lead', date: '2026-02-15', type: 'manager', rating: 5, summary: 'Sarah continues to be the team\'s strongest contributor. Ready for a leadership role.', strengths: ['Technical excellence', 'Mentoring', 'Architecture decisions'], growthAreas: ['Delegation — tends to take on too much'] },
+  ],
+  david: [
+    { id: 'f6', from: 'Tom Eriksson', fromRole: 'Tech Lead', date: '2026-02-10', type: 'manager', rating: 3, summary: 'David\'s infrastructure skills are top-notch but burnout risk is high. Must address workload.', strengths: ['Deep AWS/K8s expertise', 'Reliability'], growthAreas: ['Saying no to requests', 'Workload management', 'Documentation'] },
+  ],
+};
+
+export const employeeTrainings: Record<string, TrainingRecord[]> = {
+  alex: [
+    { id: 't1', title: 'Advanced TypeScript Patterns', provider: 'Frontend Masters', type: 'course', status: 'completed', startDate: '2025-09-01', completedDate: '2025-10-15', hours: 16, skillArea: 'TypeScript', score: 92 },
+    { id: 't2', title: 'React Performance Deep Dive', provider: 'Udemy', type: 'course', status: 'completed', startDate: '2025-07-01', completedDate: '2025-08-10', hours: 12, skillArea: 'React', score: 88 },
+    { id: 't3', title: 'AWS Cloud Practitioner', provider: 'AWS', type: 'certification', status: 'in-progress', startDate: '2026-01-15', hours: 20, skillArea: 'Cloud' },
+    { id: 't4', title: 'System Design Workshop', provider: 'Internal', type: 'workshop', status: 'planned', startDate: '2026-04-01', hours: 8, skillArea: 'Architecture' },
+    { id: 't5', title: 'Node.js Microservices', provider: 'Pluralsight', type: 'course', status: 'completed', startDate: '2025-04-01', completedDate: '2025-05-20', hours: 14, skillArea: 'Backend', score: 85 },
+  ],
+  sarah: [
+    { id: 't6', title: 'Go Concurrency Masterclass', provider: 'Ardan Labs', type: 'course', status: 'completed', startDate: '2025-11-01', completedDate: '2025-12-15', hours: 20, skillArea: 'Go', score: 95 },
+    { id: 't7', title: 'CKA Certification', provider: 'CNCF', type: 'certification', status: 'completed', startDate: '2025-06-01', completedDate: '2025-09-01', hours: 40, skillArea: 'Kubernetes', score: 91 },
+    { id: 't8', title: 'Engineering Leadership', provider: 'Internal', type: 'workshop', status: 'in-progress', startDate: '2026-02-01', hours: 12, skillArea: 'Leadership' },
+  ],
+  david: [
+    { id: 't9', title: 'Terraform Associate Cert', provider: 'HashiCorp', type: 'certification', status: 'completed', startDate: '2025-08-01', completedDate: '2025-10-01', hours: 30, skillArea: 'IaC', score: 89 },
+    { id: 't10', title: 'SRE Fundamentals', provider: 'Google Cloud', type: 'course', status: 'in-progress', startDate: '2026-01-10', hours: 18, skillArea: 'SRE' },
+  ],
+  emma: [
+    { id: 't11', title: 'JavaScript: The Good Parts', provider: 'Frontend Masters', type: 'course', status: 'completed', startDate: '2025-10-01', completedDate: '2025-11-01', hours: 10, skillArea: 'JavaScript', score: 82 },
+    { id: 't12', title: 'React Fundamentals', provider: 'Udemy', type: 'course', status: 'completed', startDate: '2025-11-15', completedDate: '2025-12-20', hours: 14, skillArea: 'React', score: 78 },
+    { id: 't13', title: 'TypeScript for React Devs', provider: 'Frontend Masters', type: 'course', status: 'in-progress', startDate: '2026-02-01', hours: 12, skillArea: 'TypeScript' },
+  ],
+  kevin: [
+    { id: 't14', title: 'HTML & CSS Bootcamp', provider: 'Codecademy', type: 'course', status: 'completed', startDate: '2025-09-01', completedDate: '2025-10-15', hours: 20, skillArea: 'Frontend', score: 75 },
+    { id: 't15', title: 'JavaScript Essentials', provider: 'Udemy', type: 'course', status: 'in-progress', startDate: '2026-01-10', hours: 16, skillArea: 'JavaScript' },
+  ],
+};
+
+export const employeeRoleHistory: Record<string, RoleHistory[]> = {
+  alex: [
+    { id: 'r1', title: 'Mid Developer', department: 'Engineering', period: 'Mar 2025 – Present', duration: '1 year' },
+    { id: 'r2', title: 'Junior Developer', department: 'Engineering', period: 'Sep 2023 – Feb 2025', duration: '1.5 years' },
+  ],
+  sarah: [
+    { id: 'r3', title: 'Senior Developer', department: 'Engineering', period: 'Jan 2024 – Present', duration: '2 years' },
+    { id: 'r4', title: 'Mid Developer', department: 'Engineering', period: 'Mar 2022 – Dec 2023', duration: '1.8 years' },
+  ],
+  david: [
+    { id: 'r5', title: 'DevOps Engineer', department: 'Infrastructure', period: 'Mar 2023 – Present', duration: '3 years' },
+  ],
+  tom: [
+    { id: 'r6', title: 'Tech Lead', department: 'Engineering', period: 'Jun 2024 – Present', duration: '1.7 years' },
+    { id: 'r7', title: 'Senior Developer', department: 'Engineering', period: 'Mar 2021 – May 2024', duration: '3.2 years' },
+  ],
+  emma: [
+    { id: 'r8', title: 'Junior Developer', department: 'Engineering', period: 'Jul 2025 – Present', duration: '8 months' },
+  ],
+};
