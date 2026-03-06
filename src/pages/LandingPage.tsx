@@ -31,7 +31,7 @@ const signalExamples = [
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-background dark">
+    <div className="min-h-screen bg-background">
       {/* Nav */}
       <nav className="fixed top-0 w-full z-50 glass-strong">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
