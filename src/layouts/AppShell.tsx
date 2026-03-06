@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, Bell, Users, BarChart3, Brain, ShieldAlert,
   MessageSquare, Settings, GraduationCap, BookOpen, Target,
-  ClipboardList, Bot, LogOut, ChevronLeft, ChevronRight, Zap
+  ClipboardList, Bot, LogOut, ChevronLeft, ChevronRight, Zap, CalendarCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -16,6 +16,7 @@ const leadNavItems = [
   { path: '/lead/delivery', label: 'Delivery', icon: BarChart3 },
   { path: '/lead/skills', label: 'Skills', icon: Brain },
   { path: '/lead/churn-risk', label: 'Churn Risk', icon: ShieldAlert },
+  { path: '/lead/one-on-ones', label: '1:1 Planner', icon: CalendarCheck },
   { path: '/lead/copilot', label: 'AI Copilot', icon: Bot },
   { path: '/lead/settings', label: 'Settings', icon: Settings },
 ];
