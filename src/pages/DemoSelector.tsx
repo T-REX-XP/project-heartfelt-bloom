@@ -20,7 +20,7 @@ const DemoSelector = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background dark flex items-center justify-center mesh-bg relative">
+    <div className="min-h-screen bg-background flex items-center justify-center mesh-bg relative">
       <button
         onClick={() => navigate('/')}
         className="absolute top-6 left-6 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
