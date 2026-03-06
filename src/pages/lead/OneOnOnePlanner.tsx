@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { employees } from '@/mocks/data';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, parseISO, addDays, isSameDay, startOfWeek, addWeeks, isToday, isPast, isFuture } from 'date-fns';
@@ -91,12 +91,22 @@ const initialMeetings: OneOnOneMeeting[] = [
 ];
 
 const OneOnOnePlanner = () => {
+  const [searchParams] = useSearchParams();
   const [meetings, setMeetings] = useState<OneOnOneMeeting[]>(initialMeetings);
   const [selectedMeeting, setSelectedMeeting] = useState<OneOnOneMeeting | null>(null);
   const [weekOffset, setWeekOffset] = useState(0);
   const [showNewMeetingDialog, setShowNewMeetingDialog] = useState(false);
   const [newTopicTitle, setNewTopicTitle] = useState('');
   const [newTopicCategory, setNewTopicCategory] = useState<string>('other');
+
+  // Auto-select meeting for employee from query param
+  useEffect(() => {
+    const employeeId = searchParams.get('employee');
+    if (employeeId) {
+      const match = meetings.find(m => m.employeeId === employeeId && m.status === 'scheduled');
+      if (match) setSelectedMeeting(match);
+    }
+  }, [searchParams, meetings]);
 
   const weekStart = startOfWeek(addWeeks(new Date(), weekOffset), { weekStartsOn: 1 });
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));

@@ -13,7 +13,7 @@ const severityConfig = {
 
 function getActionUrl(signal: Signal): string | null {
   if (!signal.employeeId) return null;
-  if (signal.actionLabel === 'Prepare 1:1') return `/lead/conversation-prep/${signal.employeeId}`;
+  if (signal.actionLabel === 'Prepare 1:1') return `/lead/one-on-ones?employee=${signal.employeeId}`;
   return `/lead/team/${signal.employeeId}`;
 }
 
