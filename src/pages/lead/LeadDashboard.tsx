@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import KPICard from '@/components/KPICard';
 import SignalCard from '@/components/SignalCard';
 import EmployeeCard from '@/components/EmployeeCard';
+import CopilotPanel from '@/components/CopilotPanel';
 import { teamLeadKPIs, teamLeadSignals, employees, teamSummary } from '@/mocks/data';
 import { AlertTriangle, DollarSign, Users, TrendingDown, Bot } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -19,11 +20,11 @@ const LeadDashboard = () => {
           <h1 className="text-2xl font-bold text-foreground">Team Dashboard</h1>
           <p className="text-muted-foreground text-sm mt-1">Intelligence overview for your team of {teamSummary.totalMembers}</p>
         </div>
-        <Link to="/lead/copilot">
+        <CopilotPanel>
           <Button className="gradient-primary text-primary-foreground border-0">
             <Bot className="w-4 h-4 mr-2" /> Ask Copilot
           </Button>
-        </Link>
+        </CopilotPanel>
       </div>
 
       {/* Urgent signals banner */}
