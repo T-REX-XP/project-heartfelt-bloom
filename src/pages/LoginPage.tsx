@@ -21,7 +21,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background dark flex items-center justify-center mesh-bg">
+    <div className="min-h-screen bg-background flex items-center justify-center mesh-bg">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
