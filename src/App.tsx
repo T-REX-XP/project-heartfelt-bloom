@@ -21,6 +21,7 @@ import LeadDelivery from "@/pages/lead/LeadDelivery";
 import LeadSkills from "@/pages/lead/LeadSkills";
 import ChurnRisk from "@/pages/lead/ChurnRisk";
 import CopilotChat from "@/pages/lead/CopilotChat";
+import OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
 
 // Member pages
 import MemberDashboard from "@/pages/member/MemberDashboard";
@@ -70,6 +71,7 @@ const App = () => (
             <Route path="/lead/delivery" element={<LeadLayout><LeadDelivery /></LeadLayout>} />
             <Route path="/lead/skills" element={<LeadLayout><LeadSkills /></LeadLayout>} />
             <Route path="/lead/churn-risk" element={<LeadLayout><ChurnRisk /></LeadLayout>} />
+            <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /></LeadLayout>} />
             <Route path="/lead/copilot" element={<LeadLayout><CopilotChat /></LeadLayout>} />
             <Route path="/lead/settings" element={<LeadLayout><SettingsPage /></LeadLayout>} />
 

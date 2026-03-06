@@ -145,3 +145,25 @@ export interface Agent {
   description: string;
   icon: string;
 }
+
+export type MeetingTopicStatus = 'pending' | 'discussed' | 'deferred';
+
+export interface MeetingTopic {
+  id: string;
+  title: string;
+  description?: string;
+  status: MeetingTopicStatus;
+  category: 'goal' | 'action-item' | 'feedback' | 'wellbeing' | 'career' | 'other';
+}
+
+export interface OneOnOneMeeting {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  date: string;
+  duration: number; // minutes
+  status: 'scheduled' | 'completed' | 'cancelled';
+  topics: MeetingTopic[];
+  notes?: string;
+  followUpActions: string[];
+}
