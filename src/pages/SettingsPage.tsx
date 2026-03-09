@@ -1,17 +1,32 @@
-import { Settings } from 'lucide-react';
+import { makeStyles, tokens, shorthands, Text } from '@fluentui/react-components';
+import { SettingsRegular } from '@fluentui/react-icons';
 
-const SettingsPage = () => (
-  <div className="space-y-6">
-    <div>
-      <h1 className="text-2xl font-bold text-foreground">Settings</h1>
-      <p className="text-muted-foreground text-sm mt-1">Manage your preferences and account</p>
+const useStyles = makeStyles({
+  root: { display: 'flex', flexDirection: 'column', ...shorthands.gap('24px') },
+  empty: {
+    ...shorthands.padding('48px'),
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorNeutralBackground1,
+    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
+    textAlign: 'center' as const,
+  },
+});
+
+const SettingsPage = () => {
+  const s = useStyles();
+  return (
+    <div className={s.root}>
+      <div>
+        <Text size={600} weight="bold" block>Settings</Text>
+        <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>Manage your preferences and account</Text>
+      </div>
+      <div className={s.empty}>
+        <SettingsRegular style={{ fontSize: 48, color: tokens.colorNeutralForeground4, marginBottom: 16 }} />
+        <Text size={400} weight="semibold" block style={{ marginBottom: 8 }}>Settings Coming Soon</Text>
+        <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>Account preferences, notifications, and integrations will be available here.</Text>
+      </div>
     </div>
-    <div className="glass rounded-xl p-12 text-center">
-      <Settings className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-      <h3 className="text-lg font-semibold text-foreground mb-2">Settings Coming Soon</h3>
-      <p className="text-sm text-muted-foreground">Account preferences, notifications, and integrations will be available here.</p>
-    </div>
-  </div>
-);
+  );
+};
 
 export default SettingsPage;

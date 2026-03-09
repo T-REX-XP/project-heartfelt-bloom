@@ -1,123 +1,136 @@
-import { motion } from 'framer-motion';
+import { makeStyles, tokens, shorthands, Text, Badge, Button as FluentButton } from '@fluentui/react-components';
+import { BotSparkleRegular, ArrowRightRegular, WarningRegular } from '@fluentui/react-icons';
+import { Link } from 'react-router-dom';
 import KPICard from '@/components/KPICard';
 import SignalCard from '@/components/SignalCard';
 import EmployeeCard from '@/components/EmployeeCard';
 import CopilotPanel from '@/components/CopilotPanel';
 import { teamLeadKPIs, teamLeadSignals, employees, teamSummary } from '@/mocks/data';
-import { AlertTriangle, DollarSign, Users, TrendingDown, Bot } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+
+const useStyles = makeStyles({
+  root: { display: 'flex', flexDirection: 'column', ...shorthands.gap('24px') },
+  header: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+  banner: {
+    display: 'flex', alignItems: 'center', ...shorthands.gap('12px'),
+    ...shorthands.padding('12px', '16px'),
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorPaletteRedBackground1,
+    ...shorthands.border('1px', 'solid', tokens.colorPaletteRedBorder1),
+  },
+  kpiGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+    ...shorthands.gap('16px'),
+  },
+  riskGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    ...shorthands.gap('16px'),
+  },
+  riskCard: {
+    ...shorthands.padding('20px'),
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorNeutralBackground1,
+    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
+  },
+  riskValue: { fontSize: '28px', fontWeight: tokens.fontWeightBold },
+  twoCol: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    ...shorthands.gap('32px'),
+    '@media (max-width: 900px)': { gridTemplateColumns: '1fr' },
+  },
+  section: { display: 'flex', flexDirection: 'column', ...shorthands.gap('12px') },
+  sectionHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+  prepItem: {
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    ...shorthands.padding('12px'),
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorNeutralBackground1,
+    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
+    textDecoration: 'none',
+    ':hover': { backgroundColor: tokens.colorNeutralBackground1Hover },
+  },
+});
 
 const LeadDashboard = () => {
+  const s = useStyles();
   const atRiskEmployees = employees.filter(e => e.status === 'red');
   const unreadSignals = teamLeadSignals.filter(s => !s.isRead);
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className={s.root}>
+      <div className={s.header}>
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Team Dashboard</h1>
-          <p className="text-muted-foreground text-sm mt-1">Intelligence overview for your team of {teamSummary.totalMembers}</p>
+          <Text size={600} weight="bold" block>Team Dashboard</Text>
+          <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>
+            Intelligence overview for your team of {teamSummary.totalMembers}
+          </Text>
         </div>
         <CopilotPanel>
-          <Button className="gradient-primary text-primary-foreground border-0">
-            <Bot className="w-4 h-4 mr-2" /> Ask Copilot
-          </Button>
+          <FluentButton appearance="primary" icon={<BotSparkleRegular />}>Ask Copilot</FluentButton>
         </CopilotPanel>
       </div>
 
-      {/* Urgent signals banner */}
       {unreadSignals.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="glass rounded-xl p-4 border border-logiq-rose/30 bg-logiq-rose/5"
-        >
-          <div className="flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 text-logiq-rose signal-pulse" />
-            <span className="text-sm font-medium text-foreground">
-              {unreadSignals.length} urgent signals require attention
-            </span>
-            <Link to="/lead/signals" className="ml-auto text-sm text-primary hover:underline">
-              View All →
-            </Link>
-          </div>
-        </motion.div>
+        <div className={s.banner}>
+          <WarningRegular style={{ color: tokens.colorPaletteRedForeground1, fontSize: 20 }} />
+          <Text size={300} weight="semibold">{unreadSignals.length} urgent signals require attention</Text>
+          <Link to="/lead/wellbeing-risks" style={{ marginLeft: 'auto', color: tokens.colorBrandForeground1, fontSize: 13 }}>
+            View All →
+          </Link>
+        </div>
       )}
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+      <div className={s.kpiGrid}>
         {teamLeadKPIs.map((kpi, i) => (
           <KPICard key={kpi.id} kpi={kpi} index={i} />
         ))}
       </div>
 
-      {/* Risk Exposure Row */}
-      <div className="grid md:grid-cols-3 gap-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-3">
-            <Users className="w-4 h-4 text-logiq-rose" />
-            <span className="text-sm font-medium text-muted-foreground">At-Risk Employees</span>
-          </div>
-          <span className="text-3xl font-bold text-logiq-rose">{teamSummary.atRiskCount}</span>
-          <span className="text-sm text-muted-foreground ml-2">of {teamSummary.totalMembers}</span>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="glass rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-3">
-            <DollarSign className="w-4 h-4 text-logiq-amber" />
-            <span className="text-sm font-medium text-muted-foreground">Churn Exposure</span>
-          </div>
-          <span className="text-3xl font-bold text-logiq-amber">${(teamSummary.churnExposure / 1000).toFixed(0)}k</span>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="glass rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-3">
-            <TrendingDown className="w-4 h-4 text-logiq-rose" />
-            <span className="text-sm font-medium text-muted-foreground">Total People Risk</span>
-          </div>
-          <span className="text-3xl font-bold text-logiq-rose">${(teamSummary.totalPeopleRisk / 1000).toFixed(0)}k</span>
-          <span className="text-sm text-muted-foreground ml-1">/year</span>
-        </motion.div>
+      <div className={s.riskGrid}>
+        <div className={s.riskCard}>
+          <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>At-Risk Employees</Text>
+          <div><span className={s.riskValue} style={{ color: tokens.colorPaletteRedForeground1 }}>{teamSummary.atRiskCount}</span>
+            <Text size={200} style={{ color: tokens.colorNeutralForeground3, marginLeft: 8 }}>of {teamSummary.totalMembers}</Text></div>
+        </div>
+        <div className={s.riskCard}>
+          <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>Churn Exposure</Text>
+          <div className={s.riskValue} style={{ color: tokens.colorPaletteYellowForeground1 }}>${(teamSummary.churnExposure / 1000).toFixed(0)}k</div>
+        </div>
+        <div className={s.riskCard}>
+          <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>Total People Risk</Text>
+          <div><span className={s.riskValue} style={{ color: tokens.colorPaletteRedForeground1 }}>${(teamSummary.totalPeopleRisk / 1000).toFixed(0)}k</span>
+            <Text size={200} style={{ color: tokens.colorNeutralForeground3, marginLeft: 4 }}>/year</Text></div>
+        </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* Signals */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-foreground">Recent Signals</h2>
-            <Link to="/lead/signals" className="text-sm text-primary hover:underline">View All</Link>
+      <div className={s.twoCol}>
+        <div className={s.section}>
+          <div className={s.sectionHeader}>
+            <Text size={400} weight="semibold">Recent Signals</Text>
+            <Link to="/lead/wellbeing-risks" style={{ color: tokens.colorBrandForeground1, fontSize: 13, textDecoration: 'none' }}>View All</Link>
           </div>
-          <div className="space-y-3">
-            {teamLeadSignals.slice(0, 4).map((signal, i) => (
-              <SignalCard key={signal.id} signal={signal} index={i} />
-            ))}
-          </div>
+          {teamLeadSignals.slice(0, 4).map((signal, i) => (
+            <SignalCard key={signal.id} signal={signal} index={i} />
+          ))}
         </div>
 
-        {/* At-Risk Employees */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-foreground">At-Risk Employees</h2>
-            <Link to="/lead/team" className="text-sm text-primary hover:underline">View Team</Link>
+        <div className={s.section}>
+          <div className={s.sectionHeader}>
+            <Text size={400} weight="semibold">At-Risk Employees</Text>
+            <Link to="/lead/team" style={{ color: tokens.colorBrandForeground1, fontSize: 13, textDecoration: 'none' }}>View Team</Link>
           </div>
-          <div className="space-y-3">
-            {atRiskEmployees.map((emp, i) => (
-              <EmployeeCard key={emp.id} employee={emp} index={i} />
-            ))}
-          </div>
-
-          {/* Quick 1:1 prep */}
-          <div className="mt-6">
-            <h3 className="text-sm font-medium text-muted-foreground mb-3">Upcoming 1:1 Prep Available</h3>
-            {atRiskEmployees.map(emp => (
-              <Link key={emp.id} to={`/lead/one-on-ones?employee=${emp.id}`}>
-                <div className="glass rounded-lg p-3 mb-2 flex items-center justify-between hover:bg-card/80 transition-colors">
-                  <span className="text-sm text-foreground">{emp.name}</span>
-                  <span className="text-xs text-primary">Prepare 1:1 →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {atRiskEmployees.map((emp, i) => (
+            <EmployeeCard key={emp.id} employee={emp} index={i} />
+          ))}
+          <Text size={200} weight="semibold" style={{ color: tokens.colorNeutralForeground3, marginTop: 16 }}>Upcoming 1:1 Prep Available</Text>
+          {atRiskEmployees.map(emp => (
+            <Link key={emp.id} to={`/lead/one-on-ones?employee=${emp.id}`} className={s.prepItem}>
+              <Text size={300}>{emp.name}</Text>
+              <Text size={200} style={{ color: tokens.colorBrandForeground1 }}>Prepare 1:1 →</Text>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

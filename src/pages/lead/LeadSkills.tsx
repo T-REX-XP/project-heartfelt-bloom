@@ -1,360 +1,210 @@
 import { useState, useMemo } from 'react';
+import { makeStyles, tokens, shorthands, Text, Badge, Button, Input, Tooltip } from '@fluentui/react-components';
+import { SearchRegular, FilterRegular, ChevronLeftRegular, ChevronRightRegular, PeopleRegular, SparkleRegular, GridRegular } from '@fluentui/react-icons';
 import { employees } from '@/mocks/data';
-import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Search, Filter, ChevronLeft, ChevronRight, Grid3X3, Users, Sparkles } from 'lucide-react';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const allSkills = Array.from(new Set(employees.flatMap(e => e.skills)));
 const ROWS_PER_PAGE = 5;
 
+const useStyles = makeStyles({
+  root: { display: 'flex', flexDirection: 'column', ...shorthands.gap('24px') },
+  searchRow: { display: 'flex', ...shorthands.gap('8px'), flexWrap: 'wrap', alignItems: 'center' },
+  skillChip: { cursor: 'pointer' },
+  statsGrid: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', ...shorthands.gap('12px') },
+  statCard: {
+    display: 'flex', alignItems: 'center', ...shorthands.gap('12px'),
+    ...shorthands.padding('16px'),
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorNeutralBackground1,
+    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
+  },
+  tableWrap: {
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorNeutralBackground1,
+    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
+    overflowX: 'auto',
+  },
+  table: { width: '100%', borderCollapse: 'collapse' as const, fontSize: '13px' },
+  th: {
+    textAlign: 'left' as const,
+    ...shorthands.padding('10px', '12px'),
+    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+    fontSize: '11px', fontWeight: 600,
+    color: tokens.colorNeutralForeground3,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.5px',
+  },
+  thCenter: { textAlign: 'center' as const },
+  td: {
+    ...shorthands.padding('10px', '12px'),
+    borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
+  },
+  dot: {
+    width: '14px', height: '14px',
+    ...shorthands.borderRadius('50%'),
+    display: 'inline-block',
+  },
+  dotHas: { backgroundColor: tokens.colorPaletteGreenBackground3 },
+  dotMissing: { backgroundColor: tokens.colorNeutralBackground5 },
+  coverageBar: {
+    height: '6px', ...shorthands.borderRadius('4px'),
+    backgroundColor: tokens.colorNeutralBackground5,
+    width: '60px', display: 'inline-block', position: 'relative' as const, verticalAlign: 'middle',
+  },
+  pagination: {
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    ...shorthands.padding('12px', '16px'),
+    borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
+  },
+});
+
 const LeadSkills = () => {
+  const s = useStyles();
   const [search, setSearch] = useState('');
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [page, setPage] = useState(0);
-  const [view, setView] = useState<'matrix' | 'cards'>('matrix');
 
-  const filteredEmployees = useMemo(() => {
+  const filtered = useMemo(() => {
     let result = employees;
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(e => e.name.toLowerCase().includes(q) || e.role.toLowerCase().includes(q));
     }
     if (selectedSkills.length > 0) {
-      result = result.filter(e => selectedSkills.some(s => e.skills.includes(s)));
+      result = result.filter(e => selectedSkills.some(sk => e.skills.includes(sk)));
     }
     return result;
   }, [search, selectedSkills]);
 
   const displayedSkills = selectedSkills.length > 0 ? selectedSkills : allSkills;
-  const totalPages = Math.ceil(filteredEmployees.length / ROWS_PER_PAGE);
-  const pagedEmployees = filteredEmployees.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE);
+  const totalPages = Math.ceil(filtered.length / ROWS_PER_PAGE);
+  const paged = filtered.slice(page * ROWS_PER_PAGE, (page + 1) * ROWS_PER_PAGE);
 
   const toggleSkill = (skill: string) => {
-    setSelectedSkills(prev =>
-      prev.includes(skill) ? prev.filter(s => s !== skill) : [...prev, skill]
-    );
+    setSelectedSkills(p => p.includes(skill) ? p.filter(s => s !== skill) : [...p, skill]);
     setPage(0);
   };
 
-  const skillCoverage = (skill: string) => {
-    const count = employees.filter(e => e.skills.includes(skill)).length;
-    return count;
-  };
-
   return (
-    <div className="space-y-6">
-      {/* Search & Filters */}
-      <div className="space-y-3">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by name or role..."
-            value={search}
-            onChange={e => { setSearch(e.target.value); setPage(0); }}
-            className="pl-10 bg-card border-border"
-          />
-        </div>
-
-        <div className="flex items-center gap-2 flex-wrap">
-          <Filter className="w-4 h-4 text-muted-foreground shrink-0" />
-          {allSkills.map(skill => {
-            const active = selectedSkills.includes(skill);
-            const coverage = skillCoverage(skill);
-            return (
-              <TooltipProvider key={skill}>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Badge
-                      variant={active ? 'default' : 'outline'}
-                      className={cn(
-                        'cursor-pointer transition-all select-none',
-                        active
-                          ? 'bg-primary text-primary-foreground hover:bg-primary/80'
-                          : 'hover:bg-accent/20 border-border text-muted-foreground'
-                      )}
-                      onClick={() => toggleSkill(skill)}
-                    >
-                      {skill}
-                    </Badge>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{coverage} team member{coverage !== 1 ? 's' : ''} with this skill</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            );
-          })}
+    <div className={s.root}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Input
+          contentBefore={<SearchRegular />}
+          placeholder="Search by name or role..."
+          value={search}
+          onChange={(_, d) => { setSearch(d.value); setPage(0); }}
+        />
+        <div className={s.searchRow}>
+          <FilterRegular style={{ color: tokens.colorNeutralForeground3 }} />
+          {allSkills.map(skill => (
+            <Badge
+              key={skill}
+              appearance={selectedSkills.includes(skill) ? 'filled' : 'outline'}
+              color={selectedSkills.includes(skill) ? 'brand' : 'informative'}
+              className={s.skillChip}
+              onClick={() => toggleSkill(skill)}
+            >
+              {skill}
+            </Badge>
+          ))}
           {selectedSkills.length > 0 && (
-            <Button variant="ghost" size="sm" onClick={() => { setSelectedSkills([]); setPage(0); }} className="text-xs text-muted-foreground">
-              Clear filters
-            </Button>
+            <Button appearance="subtle" size="small" onClick={() => { setSelectedSkills([]); setPage(0); }}>Clear</Button>
           )}
         </div>
       </div>
 
-      {/* Summary Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className={s.statsGrid}>
         {[
-          { label: 'Team Members', value: filteredEmployees.length, icon: Users },
-          { label: 'Skills Tracked', value: displayedSkills.length, icon: Sparkles },
-          { label: 'Avg Skills/Person', value: (filteredEmployees.reduce((a, e) => a + e.skills.length, 0) / (filteredEmployees.length || 1)).toFixed(1), icon: Grid3X3 },
-          { label: 'Gaps Found', value: filteredEmployees.reduce((a, e) => a + (displayedSkills.length - e.skills.filter(s => displayedSkills.includes(s)).length), 0), icon: Filter },
-        ].map((stat, i) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            className="glass rounded-xl p-4 flex items-center gap-3"
-          >
-            <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
-              <stat.icon className="w-4 h-4 text-primary" />
-            </div>
+          { label: 'Team Members', value: filtered.length, icon: <PeopleRegular /> },
+          { label: 'Skills Tracked', value: displayedSkills.length, icon: <SparkleRegular /> },
+          { label: 'Avg Skills/Person', value: (filtered.reduce((a, e) => a + e.skills.length, 0) / (filtered.length || 1)).toFixed(1), icon: <GridRegular /> },
+          { label: 'Gaps Found', value: filtered.reduce((a, e) => a + (displayedSkills.length - e.skills.filter(sk => displayedSkills.includes(sk)).length), 0), icon: <FilterRegular /> },
+        ].map(stat => (
+          <div key={stat.label} className={s.statCard}>
+            <span style={{ fontSize: 20, color: tokens.colorBrandForeground1 }}>{stat.icon}</span>
             <div>
-              <div className="text-lg font-bold text-foreground">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
+              <Text size={500} weight="bold" block>{stat.value}</Text>
+              <Text size={100} style={{ color: tokens.colorNeutralForeground3 }}>{stat.label}</Text>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
 
-      {/* Content */}
-      <AnimatePresence mode="wait">
-        {view === 'matrix' ? (
-          <motion.div
-            key="matrix"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="glass rounded-xl overflow-hidden"
-          >
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border bg-card/50">
-                    <th className="text-left px-4 py-3 text-xs font-semibold text-muted-foreground uppercase sticky left-0 bg-card/80 backdrop-blur-sm z-10">
-                      Team Member
-                    </th>
-                    {displayedSkills.map(s => (
-                      <th key={s} className="px-3 py-3 text-xs font-semibold text-muted-foreground uppercase text-center whitespace-nowrap">
-                        <span className="writing-mode-vertical">{s}</span>
-                      </th>
-                    ))}
-                    <th className="px-3 py-3 text-xs font-semibold text-muted-foreground uppercase text-center">Coverage</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <AnimatePresence>
-                    {pagedEmployees.map((emp, i) => {
-                      const covered = emp.skills.filter(s => displayedSkills.includes(s)).length;
-                      const pct = Math.round((covered / displayedSkills.length) * 100);
-                      return (
-                        <motion.tr
-                          key={emp.id}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ delay: i * 0.03 }}
-                          className="border-b border-border/50 hover:bg-primary/5 transition-colors group"
-                        >
-                          <td className="px-4 py-3 sticky left-0 bg-card/80 backdrop-blur-sm z-10">
-                            <div className="flex items-center gap-2">
-                              <div className={cn(
-                                'w-2 h-2 rounded-full shrink-0',
-                                emp.status === 'green' ? 'bg-logiq-emerald' : emp.status === 'yellow' ? 'bg-logiq-amber' : 'bg-logiq-rose'
-                              )} />
-                              <div>
-                                <div className="font-medium text-foreground whitespace-nowrap">{emp.name}</div>
-                                <div className="text-xs text-muted-foreground">{emp.role}</div>
-                              </div>
-                            </div>
-                          </td>
-                          {displayedSkills.map(s => (
-                            <td key={s} className="px-3 py-3 text-center">
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <motion.span
-                                      whileHover={{ scale: 1.4 }}
-                                      className={cn(
-                                        'w-3.5 h-3.5 rounded-full inline-block cursor-default transition-shadow',
-                                        emp.skills.includes(s)
-                                          ? 'bg-logiq-emerald shadow-[0_0_8px_hsl(var(--logiq-emerald)/0.4)]'
-                                          : 'bg-muted group-hover:bg-muted-foreground/20'
-                                      )}
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p>{emp.name}: {emp.skills.includes(s) ? `Has ${s}` : `Missing ${s}`}</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </td>
-                          ))}
-                          <td className="px-3 py-3 text-center">
-                            <div className="flex items-center justify-center gap-2">
-                              <div className="w-16 h-1.5 rounded-full bg-muted overflow-hidden">
-                                <div
-                                  className={cn(
-                                    'h-full rounded-full transition-all',
-                                    pct >= 70 ? 'bg-logiq-emerald' : pct >= 40 ? 'bg-logiq-amber' : 'bg-logiq-rose'
-                                  )}
-                                  style={{ width: `${pct}%` }}
-                                />
-                              </div>
-                              <span className="text-xs font-mono text-muted-foreground w-8">{pct}%</span>
-                            </div>
-                          </td>
-                        </motion.tr>
-                      );
-                    })}
-                  </AnimatePresence>
-                  {pagedEmployees.length === 0 && (
-                    <tr>
-                      <td colSpan={displayedSkills.length + 2} className="text-center py-12 text-muted-foreground">
-                        No team members match your filters
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+      <div className={s.tableWrap}>
+        <table className={s.table}>
+          <thead>
+            <tr>
+              <th className={s.th}>Team Member</th>
+              {displayedSkills.map(sk => (
+                <th key={sk} className={`${s.th} ${s.thCenter}`} style={{ whiteSpace: 'nowrap' }}>{sk}</th>
+              ))}
+              <th className={`${s.th} ${s.thCenter}`}>Coverage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paged.map(emp => {
+              const covered = emp.skills.filter(sk => displayedSkills.includes(sk)).length;
+              const pct = Math.round((covered / displayedSkills.length) * 100);
+              return (
+                <tr key={emp.id}>
+                  <td className={s.td}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{
+                        width: 8, height: 8, borderRadius: '50%',
+                        backgroundColor: emp.status === 'green' ? tokens.colorPaletteGreenBackground3 :
+                          emp.status === 'yellow' ? tokens.colorPaletteYellowBackground3 :
+                          tokens.colorPaletteRedBackground3,
+                      }} />
+                      <div>
+                        <Text size={300} weight="medium" block>{emp.name}</Text>
+                        <Text size={100} style={{ color: tokens.colorNeutralForeground3 }}>{emp.role}</Text>
+                      </div>
+                    </div>
+                  </td>
+                  {displayedSkills.map(sk => (
+                    <td key={sk} className={s.td} style={{ textAlign: 'center' }}>
+                      <Tooltip content={`${emp.name}: ${emp.skills.includes(sk) ? 'Has' : 'Missing'} ${sk}`} relationship="description">
+                        <span className={`${s.dot} ${emp.skills.includes(sk) ? s.dotHas : s.dotMissing}`} />
+                      </Tooltip>
+                    </td>
+                  ))}
+                  <td className={s.td} style={{ textAlign: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                      <span className={s.coverageBar}>
+                        <span style={{
+                          position: 'absolute', left: 0, top: 0, height: '100%',
+                          width: `${pct}%`, borderRadius: 4,
+                          backgroundColor: pct >= 70 ? tokens.colorPaletteGreenBackground3 :
+                            pct >= 40 ? tokens.colorPaletteYellowBackground3 :
+                            tokens.colorPaletteRedBackground3,
+                        }} />
+                      </span>
+                      <Text size={200} style={{ fontFamily: 'monospace' }}>{pct}%</Text>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+            {paged.length === 0 && (
+              <tr><td colSpan={displayedSkills.length + 2} style={{ textAlign: 'center', padding: 48, color: tokens.colorNeutralForeground3 }}>No team members match your filters</td></tr>
+            )}
+          </tbody>
+        </table>
+        {totalPages > 1 && (
+          <div className={s.pagination}>
+            <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>
+              Showing {page * ROWS_PER_PAGE + 1}–{Math.min((page + 1) * ROWS_PER_PAGE, filtered.length)} of {filtered.length}
+            </Text>
+            <div style={{ display: 'flex', gap: 4 }}>
+              <Button appearance="subtle" size="small" icon={<ChevronLeftRegular />} disabled={page === 0} onClick={() => setPage(p => p - 1)} />
+              {Array.from({ length: totalPages }, (_, i) => (
+                <Button key={i} appearance={page === i ? 'primary' : 'subtle'} size="small" onClick={() => setPage(i)}>{i + 1}</Button>
+              ))}
+              <Button appearance="subtle" size="small" icon={<ChevronRightRegular />} disabled={page === totalPages - 1} onClick={() => setPage(p => p + 1)} />
             </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-border">
-                <span className="text-xs text-muted-foreground">
-                  Showing {page * ROWS_PER_PAGE + 1}–{Math.min((page + 1) * ROWS_PER_PAGE, filteredEmployees.length)} of {filteredEmployees.length}
-                </span>
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    disabled={page === 0}
-                    onClick={() => setPage(p => p - 1)}
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </Button>
-                  {Array.from({ length: totalPages }, (_, i) => (
-                    <Button
-                      key={i}
-                      variant={page === i ? 'default' : 'ghost'}
-                      size="icon"
-                      className={cn('h-8 w-8 text-xs', page === i && 'bg-primary text-primary-foreground')}
-                      onClick={() => setPage(i)}
-                    >
-                      {i + 1}
-                    </Button>
-                  ))}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
-                    disabled={page === totalPages - 1}
-                    onClick={() => setPage(p => p + 1)}
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            )}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="cards"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          >
-            {pagedEmployees.map((emp, i) => (
-              <motion.div
-                key={emp.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.05 }}
-                className="glass rounded-xl p-5 hover:border-primary/30 transition-all group"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={cn(
-                    'w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold',
-                    emp.status === 'green' ? 'bg-logiq-emerald/20 text-logiq-emerald'
-                      : emp.status === 'yellow' ? 'bg-logiq-amber/20 text-logiq-amber'
-                      : 'bg-logiq-rose/20 text-logiq-rose'
-                  )}>
-                    {emp.name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-foreground">{emp.name}</div>
-                    <div className="text-xs text-muted-foreground">{emp.role}</div>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {displayedSkills.map(s => (
-                    <Badge
-                      key={s}
-                      variant={emp.skills.includes(s) ? 'default' : 'outline'}
-                      className={cn(
-                        'text-xs transition-all',
-                        emp.skills.includes(s)
-                          ? 'bg-logiq-emerald/15 text-logiq-emerald border-logiq-emerald/30 hover:bg-logiq-emerald/25'
-                          : 'border-border text-muted-foreground/50'
-                      )}
-                    >
-                      {s}
-                    </Badge>
-                  ))}
-                </div>
-                <div className="mt-3 pt-3 border-t border-border/50 flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">
-                    {emp.skills.filter(s => displayedSkills.includes(s)).length}/{displayedSkills.length} skills
-                  </span>
-                  <div className="w-20 h-1.5 rounded-full bg-muted overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-primary transition-all"
-                      style={{ width: `${Math.round((emp.skills.filter(s => displayedSkills.includes(s)).length / displayedSkills.length) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-            {pagedEmployees.length === 0 && (
-              <div className="col-span-full text-center py-12 text-muted-foreground glass rounded-xl">
-                No team members match your filters
-              </div>
-            )}
-
-            {/* Card view pagination */}
-            {totalPages > 1 && (
-              <div className="col-span-full flex items-center justify-center gap-1 pt-2">
-                <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === 0} onClick={() => setPage(p => p - 1)}>
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <Button
-                    key={i}
-                    variant={page === i ? 'default' : 'ghost'}
-                    size="icon"
-                    className={cn('h-8 w-8 text-xs', page === i && 'bg-primary text-primary-foreground')}
-                    onClick={() => setPage(i)}
-                  >
-                    {i + 1}
-                  </Button>
-                ))}
-                <Button variant="ghost" size="icon" className="h-8 w-8" disabled={page === totalPages - 1} onClick={() => setPage(p => p + 1)}>
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              </div>
-            )}
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 };
