@@ -26,7 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setState({
       isAuthenticated: true,
       role,
-      userName: role === 'team-lead' ? 'Jordan Mitchell' : role === 'team-member' ? 'Alex Chen' : 'Admin',
+      userName: role === 'team-lead' ? 'Jordan Mitchell' : 'Alex Chen',
     });
   }, []);
 
