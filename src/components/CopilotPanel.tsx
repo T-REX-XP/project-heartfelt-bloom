@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   msgRowUser: { justifyContent: 'flex-end' },
   bubble: {
     maxWidth: '85%', ...shorthands.padding('10px', '14px'),
-    ...shorthands.borderRadius('8px'), fontSize: tokens.fontSizeBase300, lineHeight: '1.5',
+    ...shorthands.borderRadius('8px'), fontSize: tokens.fontSizeBase300tSizeBase300, lineHeight: '1.5',
   },
   bubbleAssistant: {
     backgroundColor: tokens.colorNeutralBackground3,
@@ -44,8 +44,7 @@ const useStyles = makeStyles({
     ...shorthands.borderRadius('8px'),
     backgroundColor: tokens.colorNeutralBackground3,
     ...shorthands.border('none'),
-    cursor: 'pointer', textAlign: 'left' as const,
-    fontSi'13px': 13, color: tokens.colorNeutralForeground2,
+    cursor: 'pointer', textAlign: 'left' as constze: tokens.fontSizeBase300Si'13px': 13, color: tokens.colorNeutralForeground2,
     ':hover': { backgroundColor: tokens.colorNeutralBackground3Hover },
   },
 });
