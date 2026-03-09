@@ -17,7 +17,7 @@ const leadNavItems = [
   { path: '/lead/delivery', label: 'Delivery', icon: BarChart3 },
   { path: '/lead/skills', label: 'Skills', icon: Brain },
   { path: '/lead/one-on-ones', label: '1:1 Planner', icon: CalendarCheck },
-  { path: '/lead/copilot', label: 'AI Copilot', icon: Bot },
+  { path: '/lead/settings', label: 'Settings', icon: Settings },
   { path: '/lead/settings', label: 'Settings', icon: Settings },
 ];
 
