@@ -27,7 +27,7 @@ import MemberLearning from "@/pages/member/MemberLearning";
 import MemberIDP from "@/pages/member/MemberIDP";
 import MemberDelivery from "@/pages/member/MemberDelivery";
 import MemberOneOnOnePrep from "@/pages/member/MemberOneOnOnePrep";
-import MemberCoach from "@/pages/member/MemberCoach";
+
 
 import SettingsPage from "@/pages/SettingsPage";
 
