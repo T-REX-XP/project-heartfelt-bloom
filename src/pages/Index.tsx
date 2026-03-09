@@ -1,19 +1,11 @@
-import { makeStyles, tokens, Text } from '@fluentui/react-components';
-
-const useStyles = makeStyles({
-  root: {
-    display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center',
-    backgroundColor: tokens.colorNeutralBackground1, textAlign: 'center' as const,
-  },
-});
+// Update this page (the content is just a fallback if you fail to update the page)
 
 const Index = () => {
-  const s = useStyles();
   return (
-    <div className={s.root}>
-      <div>
-        <Text size={800} weight="bold" block style={{ marginBottom: 16 }}>Welcome to LogIQ</Text>
-        <Text size={400} style={{ color: tokens.colorNeutralForeground3 }}>Intelligence for High-Performing Teams</Text>
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="text-center">
+        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
+        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
       </div>
     </div>
   );

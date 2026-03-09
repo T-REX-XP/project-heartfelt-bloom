@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { makeStyles, tokens, shorthands, Text, Input, Button, Avatar } from '@fluentui/react-components';
-import { BotSparkleRegular, SendRegular, PersonRegular } from '@fluentui/react-icons';
+import { motion } from 'framer-motion';
+import { Bot, Send, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const prompts = [
   'Which team members are at highest churn risk?',
@@ -18,39 +20,7 @@ const demoResponses: Record<string, string> = {
   'alex': 'Alex shows multiple concerning signals: 4 sick days in 3 weeks, no learning hours in 6 weeks, motivation dropped from 65→48. He may be dealing with burnout or personal challenges. Approach with empathy — start the 1:1 by checking on his wellbeing before discussing performance.',
 };
 
-const useStyles = makeStyles({
-  root: { display: 'flex', flexDirection: 'column', ...shorthands.gap('24px') },
-  promptGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', ...shorthands.gap('8px') },
-  promptBtn: {
-    ...shorthands.padding('16px'),
-    ...shorthands.borderRadius('8px'),
-    backgroundColor: tokens.colorNeutralBackground1,
-    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
-    cursor: 'pointer', textAlign: 'left' as const,
-    fontSize: '13px', color: tokens.colorNeutralForeground2,
-    ':hover': { backgroundColor: tokens.colorNeutralBackground1Hover },
-  },
-  messages: { display: 'flex', flexDirection: 'column', ...shorthands.gap('16px'), maxHeight: '500px', overflowY: 'auto' },
-  msgRow: { display: 'flex', ...shorthands.gap('12px') },
-  msgRowUser: { justifyContent: 'flex-end' },
-  bubble: {
-    maxWidth: '80%', ...shorthands.padding('12px', '16px'),
-    ...shorthands.borderRadius('8px'), fontSize: '13px', lineHeight: '1.5',
-  },
-  bubbleAssistant: {
-    backgroundColor: tokens.colorNeutralBackground1,
-    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
-    color: tokens.colorNeutralForeground1,
-  },
-  bubbleUser: {
-    backgroundColor: tokens.colorBrandBackground,
-    color: tokens.colorNeutralForegroundOnBrand,
-  },
-  inputRow: { display: 'flex', ...shorthands.gap('8px') },
-});
-
 const CopilotChat = ({ title = 'AI Copilot', promptList = prompts }: { title?: string; promptList?: string[] }) => {
-  const s = useStyles();
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: 'Hello! I\'m your AI copilot. I have context about your team\'s KPIs, signals, and employee data. How can I help?' },
   ]);
@@ -58,53 +28,81 @@ const CopilotChat = ({ title = 'AI Copilot', promptList = prompts }: { title?: s
 
   const send = (text: string) => {
     if (!text.trim()) return;
+    const userMsg: Message = { role: 'user', content: text };
     const lower = text.toLowerCase();
     const responseKey = Object.keys(demoResponses).find(k => lower.includes(k));
     const response = responseKey ? demoResponses[responseKey] : 'Based on my analysis of team data, I\'d recommend reviewing the signals dashboard for the most current insights. Would you like me to dive deeper into a specific area?';
-    setMessages(prev => [...prev, { role: 'user', content: text }, { role: 'assistant', content: response }]);
+    setMessages(prev => [...prev, userMsg, { role: 'assistant', content: response }]);
     setInput('');
   };
 
   return (
-    <div className={s.root}>
+    <div className="space-y-6">
       <div>
-        <Text size={600} weight="bold" block>{title}</Text>
-        <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>Ask questions about your team and get AI-powered insights</Text>
+        <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+        <p className="text-muted-foreground text-sm mt-1">Ask questions about your team and get AI-powered insights</p>
       </div>
 
+      {/* Prompt starters */}
       {messages.length <= 1 && (
-        <div className={s.promptGrid}>
+        <div className="grid grid-cols-2 gap-2">
           {promptList.map((p, i) => (
-            <button key={i} onClick={() => send(p)} className={s.promptBtn}>{p}</button>
+            <motion.button
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              onClick={() => send(p)}
+              className="glass rounded-xl p-4 text-left text-sm text-muted-foreground hover:text-foreground hover:bg-card/80 transition-colors"
+            >
+              {p}
+            </motion.button>
           ))}
         </div>
       )}
 
-      <div className={s.messages}>
+      {/* Messages */}
+      <div className="space-y-4 max-h-[500px] overflow-y-auto">
         {messages.map((msg, i) => (
-          <div key={i} className={`${s.msgRow} ${msg.role === 'user' ? s.msgRowUser : ''}`}>
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}
+          >
             {msg.role === 'assistant' && (
-              <Avatar icon={<BotSparkleRegular />} color="brand" size={28} />
+              <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
+                <Bot className="w-4 h-4 text-primary-foreground" />
+              </div>
             )}
-            <div className={`${s.bubble} ${msg.role === 'user' ? s.bubbleUser : s.bubbleAssistant}`}>
+            <div className={`max-w-[80%] rounded-xl p-4 text-sm ${
+              msg.role === 'user'
+                ? 'bg-primary text-primary-foreground'
+                : 'glass'
+            }`}>
               {msg.content}
             </div>
             {msg.role === 'user' && (
-              <Avatar icon={<PersonRegular />} color="neutral" size={28} />
+              <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
+                <User className="w-4 h-4 text-secondary-foreground" />
+              </div>
             )}
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      <div className={s.inputRow}>
+      {/* Input */}
+      <div className="flex gap-2">
         <Input
-          style={{ flex: 1 }}
           value={input}
-          onChange={(_, d) => setInput(d.value)}
+          onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && send(input)}
           placeholder="Ask about your team..."
+          className="bg-secondary/50"
         />
-        <Button appearance="primary" icon={<SendRegular />} onClick={() => send(input)} />
+        <Button onClick={() => send(input)} className="gradient-primary text-primary-foreground border-0">
+          <Send className="w-4 h-4" />
+        </Button>
       </div>
     </div>
   );

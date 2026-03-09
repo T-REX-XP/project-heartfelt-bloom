@@ -1,11 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { FluentProvider } from "@fluentui/react-components";
-import { lightTheme } from "./theme";
-import App from "./App";
+import App from "./App.tsx";
 import "./index.css";
 
-createRoot(document.getElementById("root")!).render(
-  <FluentProvider theme={lightTheme}>
-    <App />
-  </FluentProvider>
-);
+createRoot(document.getElementById("root")!).render(<App />);

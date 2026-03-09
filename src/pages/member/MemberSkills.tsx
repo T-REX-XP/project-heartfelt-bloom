@@ -1,4 +1,5 @@
-import { makeStyles, tokens, shorthands, Text, ProgressBar } from '@fluentui/react-components';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 const skills = [
   { name: 'React', level: 82, target: 90 },
@@ -11,67 +12,45 @@ const skills = [
   { name: 'CI/CD', level: 50, target: 70 },
 ];
 
-const useStyles = makeStyles({
-  root: { display: 'flex', flexDirection: 'column', ...shorthands.gap('24px') },
-  card: {
-    ...shorthands.padding('24px'),
-    ...shorthands.borderRadius('8px'),
-    backgroundColor: tokens.colorNeutralBackground1,
-    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
-  },
-  legend: { display: 'flex', alignItems: 'center', ...shorthands.gap('16px') },
-  legendDot: { width: '12px', height: '6px', ...shorthands.borderRadius('3px'), display: 'inline-block' },
-  skillRow: { display: 'flex', flexDirection: 'column', ...shorthands.gap('4px'), marginTop: '16px' },
-  skillHeader: { display: 'flex', justifyContent: 'space-between' },
-  barWrap: { position: 'relative' as const, height: '12px', ...shorthands.borderRadius('6px'), backgroundColor: tokens.colorNeutralBackground4, overflow: 'hidden' },
-  barTarget: { position: 'absolute' as const, top: 0, left: 0, height: '100%', ...shorthands.borderRadius('6px'), backgroundColor: tokens.colorNeutralStroke2 },
-  barCurrent: { position: 'absolute' as const, top: 0, left: 0, height: '100%', ...shorthands.borderRadius('6px') },
-});
+const MemberSkills = () => (
+  <div className="space-y-6">
+    <div>
+      <h1 className="text-2xl font-bold text-foreground">Skills Profile</h1>
+      <p className="text-muted-foreground text-sm mt-1">Your current skills coverage and gap analysis</p>
+    </div>
 
-const getBarColor = (level: number, target: number) => {
-  const ratio = level / target;
-  if (ratio >= 0.8) return '#107C10';
-  if (ratio >= 0.5) return '#CA5010';
-  return '#D13438';
-};
-
-const MemberSkills = () => {
-  const s = useStyles();
-  return (
-    <div className={s.root}>
-      <div>
-        <Text size={600} weight="bold" block>Skills Profile</Text>
-        <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>Your current skills coverage and gap analysis</Text>
-      </div>
-
-      <div className={s.card}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-          <Text size={300} weight="semibold">Skills Coverage</Text>
-          <div className={s.legend}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: tokens.colorNeutralForeground3 }}>
-              <span className={s.legendDot} style={{ backgroundColor: '#0078D4' }} /> Current
-            </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: tokens.colorNeutralForeground3 }}>
-              <span className={s.legendDot} style={{ backgroundColor: tokens.colorNeutralStroke2 }} /> Target
-            </span>
-          </div>
+    <div className="glass rounded-xl p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-semibold text-foreground">Skills Coverage</h3>
+        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1"><span className="w-3 h-1.5 rounded bg-primary inline-block" /> Current</span>
+          <span className="flex items-center gap-1"><span className="w-3 h-1.5 rounded bg-muted-foreground/30 inline-block" /> Target</span>
         </div>
-
-        {skills.map(skill => (
-          <div key={skill.name} className={s.skillRow}>
-            <div className={s.skillHeader}>
-              <Text size={300}>{skill.name}</Text>
-              <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>{skill.level} / {skill.target}</Text>
+      </div>
+      <div className="space-y-4">
+        {skills.map((skill, i) => (
+          <motion.div key={skill.name} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-sm text-foreground">{skill.name}</span>
+              <span className="text-xs text-muted-foreground">{skill.level} / {skill.target}</span>
             </div>
-            <div className={s.barWrap}>
-              <div className={s.barTarget} style={{ width: `${skill.target}%` }} />
-              <div className={s.barCurrent} style={{ width: `${skill.level}%`, backgroundColor: getBarColor(skill.level, skill.target) }} />
+            <div className="relative h-3 bg-secondary rounded-full overflow-hidden">
+              <div className="absolute inset-0 h-full rounded-full bg-muted-foreground/10" style={{ width: `${skill.target}%` }} />
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${skill.level}%` }}
+                transition={{ delay: 0.2 + i * 0.05, duration: 0.6 }}
+                className={cn("absolute h-full rounded-full",
+                  skill.level >= skill.target * 0.8 ? 'bg-logiq-emerald' :
+                  skill.level >= skill.target * 0.5 ? 'bg-logiq-amber' : 'bg-logiq-rose'
+                )}
+              />
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default MemberSkills;

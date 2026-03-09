@@ -1,85 +1,60 @@
 import { useNavigate } from 'react-router-dom';
-import { makeStyles, tokens, shorthands, Text } from '@fluentui/react-components';
-import { FlashRegular, PeopleRegular, PersonRegular, ChevronLeftRegular } from '@fluentui/react-icons';
+import { motion } from 'framer-motion';
+import { Zap, Users, User, ChevronLeft } from 'lucide-react';
 import { useAuth } from '@/store/AuthContext';
 import type { Role } from '@/domain/types';
 
-const useStyles = makeStyles({
-  page: {
-    minHeight: '100vh', backgroundColor: tokens.colorNeutralBackground3,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    position: 'relative' as const,
-  },
-  back: {
-    position: 'absolute' as const, top: '24px', left: '24px',
-    display: 'flex', alignItems: 'center', ...shorthands.gap('4px'),
-    color: tokens.colorNeutralForeground3, cursor: 'pointer',
-    fontSize: '13px', textDecoration: 'none',
-    ':hover': { color: tokens.colorNeutralForeground1 },
-    backgroundColor: 'transparent', ...shorthands.border('none'),
-  },
-  content: { textAlign: 'center' as const, maxWidth: '640px', ...shorthands.padding('0', '24px') },
-  logoRow: { display: 'flex', alignItems: 'center', justifyContent: 'center', ...shorthands.gap('8px'), marginBottom: '32px' },
-  logoIcon: {
-    width: '36px', height: '36px', ...shorthands.borderRadius('8px'),
-    backgroundColor: tokens.colorBrandBackground,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    color: tokens.colorNeutralForegroundOnBrand,
-  },
-  grid: { display: 'grid', gridTemplateColumns: '1fr 1fr', ...shorthands.gap('24px'), marginTop: '48px' },
-  roleCard: {
-    ...shorthands.padding('32px'),
-    ...shorthands.borderRadius('12px'),
-    backgroundColor: tokens.colorNeutralBackground1,
-    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
-    cursor: 'pointer', textAlign: 'left' as const,
-    transition: 'all 150ms ease',
-    ':hover': {
-      backgroundColor: tokens.colorNeutralBackground1Hover,
-      ...shorthands.border('1px', 'solid', tokens.colorBrandStroke1),
-      boxShadow: tokens.shadow8,
-    },
-  },
-  roleIcon: {
-    width: '48px', height: '48px', ...shorthands.borderRadius('12px'),
-    backgroundColor: tokens.colorBrandBackground,
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    color: tokens.colorNeutralForegroundOnBrand,
-    marginBottom: '16px',
-  },
-});
-
 const roles: { role: Role; label: string; desc: string; icon: React.ElementType; path: string }[] = [
-  { role: 'team-lead', label: 'Team Lead', desc: 'View team dashboards, signals, risks, and prepare for 1:1s with AI copilot assistance.', icon: PeopleRegular, path: '/lead/dashboard' },
-  { role: 'team-member', label: 'Team Member', desc: 'Track your growth, receive private coaching, manage your development plan, and prepare for 1:1s.', icon: PersonRegular, path: '/member/dashboard' },
+  { role: 'team-lead', label: 'Team Lead', desc: 'View team dashboards, signals, risks, and prepare for 1:1s with AI copilot assistance.', icon: Users, path: '/lead/dashboard' },
+  { role: 'team-member', label: 'Team Member', desc: 'Track your growth, receive private coaching, manage your development plan, and prepare for 1:1s.', icon: User, path: '/member/dashboard' },
 ];
 
 const LoginPage = () => {
-  const s = useStyles();
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const select = (r: typeof roles[0]) => { login(r.role); navigate(r.path); };
+  const select = (r: typeof roles[0]) => {
+    login(r.role);
+    navigate(r.path);
+  };
 
   return (
-    <div className={s.page}>
-      <button onClick={() => navigate('/')} className={s.back}>
-        <ChevronLeftRegular /> Back
+    <div className="min-h-screen bg-background flex items-center justify-center mesh-bg relative">
+      <button
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+      >
+        <ChevronLeft className="w-4 h-4" />
+        Back
       </button>
-      <div className={s.content}>
-        <div className={s.logoRow}>
-          <div className={s.logoIcon}><FlashRegular style={{ fontSize: 18 }} /></div>
-          <Text size={600} weight="bold">LogIQ</Text>
-        </div>
-        <Text size={700} weight="bold" block>Choose Your Role</Text>
-        <Text size={300} style={{ color: tokens.colorNeutralForeground3 }}>Select a role to enter the platform.</Text>
-        <div className={s.grid}>
-          {roles.map(r => (
-            <div key={r.role} className={s.roleCard} onClick={() => select(r)}>
-              <div className={s.roleIcon}><r.icon style={{ fontSize: 24 }} /></div>
-              <Text size={400} weight="bold" block style={{ marginBottom: 8 }}>{r.label}</Text>
-              <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>{r.desc}</Text>
+      <div className="max-w-2xl mx-auto px-6 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
+              <Zap className="w-5 h-5 text-primary-foreground" />
             </div>
+            <span className="text-2xl font-bold text-gradient">LogIQ</span>
+          </div>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Choose Your Role</h1>
+          <p className="text-muted-foreground mb-12">Select a role to enter the platform.</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {roles.map((r, i) => (
+            <motion.button
+              key={r.role}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
+              onClick={() => select(r)}
+              className="glass rounded-2xl p-8 text-left hover:glow-primary hover:scale-[1.03] transition-all group cursor-pointer"
+            >
+              <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                <r.icon className="w-7 h-7 text-primary-foreground" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground mb-2">{r.label}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
+            </motion.button>
           ))}
         </div>
       </div>

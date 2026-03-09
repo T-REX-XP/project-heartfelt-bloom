@@ -1,47 +1,43 @@
-import { makeStyles, shorthands, Text, tokens, Tab, TabList } from '@fluentui/react-components';
-import { useState } from 'react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import EmployeeCard from '@/components/EmployeeCard';
 import { employees } from '@/mocks/data';
 import { useNavigate } from 'react-router-dom';
 import LeadSkills from './LeadSkills';
 import LeadDelivery from './LeadDelivery';
 
-const useStyles = makeStyles({
-  root: { display: 'flex', flexDirection: 'column', ...shorthands.gap('24px') },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-    ...shorthands.gap('16px'),
-  },
-});
-
 const LeadTeam = () => {
-  const s = useStyles();
   const navigate = useNavigate();
-  const [tab, setTab] = useState('people');
 
   return (
-    <div className={s.root}>
+    <div className="space-y-6">
       <div>
-        <Text size={600} weight="bold" block>My Team</Text>
-        <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>{employees.length} team members</Text>
+        <h1 className="text-2xl font-bold text-foreground">My Team</h1>
+        <p className="text-muted-foreground text-sm mt-1">{employees.length} team members</p>
       </div>
 
-      <TabList selectedValue={tab} onTabSelect={(_, d) => setTab(d.value as string)}>
-        <Tab value="people">People</Tab>
-        <Tab value="skills">Skills</Tab>
-        <Tab value="delivery">Delivery</Tab>
-      </TabList>
+      <Tabs defaultValue="people" className="w-full">
+        <TabsList>
+          <TabsTrigger value="people">People</TabsTrigger>
+          <TabsTrigger value="skills">Skills</TabsTrigger>
+          <TabsTrigger value="delivery">Delivery</TabsTrigger>
+        </TabsList>
 
-      {tab === 'people' && (
-        <div className={s.grid}>
-          {employees.map((emp, i) => (
-            <EmployeeCard key={emp.id} employee={emp} index={i} onClick={() => navigate(`/lead/team/${emp.id}`)} />
-          ))}
-        </div>
-      )}
-      {tab === 'skills' && <LeadSkills />}
-      {tab === 'delivery' && <LeadDelivery />}
+        <TabsContent value="people" className="mt-4">
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+            {employees.map((emp, i) => (
+              <EmployeeCard key={emp.id} employee={emp} index={i} onClick={() => navigate(`/lead/team/${emp.id}`)} />
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="skills" className="mt-4">
+          <LeadSkills />
+        </TabsContent>
+
+        <TabsContent value="delivery" className="mt-4">
+          <LeadDelivery />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

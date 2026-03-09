@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode, command }) => ({
+export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
@@ -12,22 +12,10 @@ export default defineConfig(({ mode, command }) => ({
       overlay: false,
     },
   },
-  plugins: [react(), command === "serve" && mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'scheduler', 'use-sync-external-store'],
-  },
-  optimizeDeps: {
-    exclude: ['@fluentui/react-components', '@fluentui/react-icons'],
-    include: [
-      'scheduler',
-      'react',
-      'react-dom',
-      'use-sync-external-store',
-      'use-sync-external-store/shim',
-      'use-sync-external-store/shim/with-selector',
-    ],
   },
 }));
