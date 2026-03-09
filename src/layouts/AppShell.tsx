@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 
 const leadNavItems = [
   { path: '/lead/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/lead/wellbeing-risks', label: 'Wellbeing & Risks', icon: ShieldAlerton: ShieldAlert },
+  { path: '/lead/wellbeing-risks', label: 'Wellbeing & Risks', icon: ShieldAlert },
   { path: '/lead/team', label: 'Team', icon: Users },
   { path: '/lead/delivery', label: 'Delivery', icon: BarChart3 },
   { path: '/lead/skills', label: 'Skills', ic ShieldAlert },
