@@ -38,7 +38,7 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
 
-  const navItems = role === 'team-lead' ? leadNavItems : role === 'admin' ? leadNavItems : memberNavItems;
+  const navItems = role === 'team-lead' ? leadNavItems : memberNavItems;
 
   return (
     <div className="flex h-screen bg-background">

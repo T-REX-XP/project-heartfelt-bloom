@@ -5,7 +5,7 @@ import { Zap, Mail, Lock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/store/AuthContext';
-import { Link } from 'react-router-dom';
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
