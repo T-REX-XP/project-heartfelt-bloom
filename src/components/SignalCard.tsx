@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
   criticalIcon: { backgroundColor: tokens.colorPaletteRedBackground1, color: tokens.colorPaletteRedForeground1 },
   warningIcon: { backgroundColor: tokens.colorPaletteYellowBackground1, color: tokens.colorPaletteYellowForeground1 },
-  infoIcon: { backgroundColor: tokens.colorPaletteBlueBackground1, color: tokens.colorPaletteBlueForeground1 },
+  infoIcon: { backgroundColor: tokens.colorPaletteBlueBackground2, color: tokens.colorPaletteBlueForeground2 },
   positiveIcon: { backgroundColor: tokens.colorPaletteGreenBackground1, color: tokens.colorPaletteGreenForeground1 },
   content: { flex: 1, minWidth: 0 },
   titleRow: { display: 'flex', alignItems: 'center', ...shorthands.gap('8px'), marginBottom: '4px' },
