@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/store/AuthContext';
-import { makeStyles, tokens, shorthands, mergeClasses, Badge, Tooltip, Avatar } from '@fluentui/react-components';
+import {
+  makeStyles, tokens, shorthands, mergeClasses,
+  Badge, Tooltip, Avatar, Text, Divider,
+} from '@fluentui/react-components';
 import {
   BoardRegular, BoardFilled,
   AlertRegular, AlertFilled,
@@ -12,109 +15,148 @@ import {
   NavigationRegular,
   ChatSparkleRegular, ChatSparkleFilled,
   ShieldErrorRegular, ShieldErrorFilled,
-  DocumentBulletListRegular, DocumentBulletListFilled,
   BookRegular, BookFilled,
-  PersonRegular, PersonFilled,
   ClipboardTaskListLtrRegular, ClipboardTaskListLtrFilled,
+  GridRegular,
 } from '@fluentui/react-icons';
 import FloatingCopilot from '@/components/FloatingCopilot';
+
+/*
+ * Office 365 App Shell
+ * Follows the M365 admin center / Teams vertical nav pattern:
+ * - 48px top command bar with app branding
+ * - Left nav rail with icon + label, collapsible
+ * - Neutral background canvas (#F5F5F5)
+ */
 
 const useStyles = makeStyles({
   root: {
     display: 'flex',
+    flexDirection: 'column',
     height: '100vh',
-    backgroundColor: tokens.colorNeutralBackground3,
+    backgroundColor: '#F5F5F5',
   },
+  /* -------- Top command bar (48px, Office 365 style) -------- */
+  commandBar: {
+    height: '48px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#0078D4',
+    ...shorthands.padding('0', '16px'),
+    flexShrink: 0,
+    zIndex: 100,
+  },
+  commandBarLeft: {
+    display: 'flex',
+    alignItems: 'center',
+    ...shorthands.gap('12px'),
+  },
+  wafflBtn: {
+    width: '32px',
+    height: '32px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shorthands.borderRadius('4px'),
+    backgroundColor: 'transparent',
+    color: '#FFFFFF',
+    cursor: 'pointer',
+    ...shorthands.border('none'),
+    ':hover': { backgroundColor: 'rgba(255,255,255,0.15)' },
+  },
+  appName: {
+    fontSize: '16px',
+    fontWeight: 600,
+    color: '#FFFFFF',
+    letterSpacing: '-0.2px',
+  },
+  commandBarRight: {
+    display: 'flex',
+    alignItems: 'center',
+    ...shorthands.gap('8px'),
+  },
+  userPill: {
+    display: 'flex',
+    alignItems: 'center',
+    ...shorthands.gap('8px'),
+    ...shorthands.padding('4px', '12px', '4px', '4px'),
+    ...shorthands.borderRadius('16px'),
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    color: '#FFFFFF',
+    fontSize: '13px',
+    fontWeight: 500,
+  },
+  signOutBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '32px',
+    height: '32px',
+    ...shorthands.borderRadius('4px'),
+    backgroundColor: 'transparent',
+    color: 'rgba(255,255,255,0.85)',
+    cursor: 'pointer',
+    ...shorthands.border('none'),
+    ':hover': { backgroundColor: 'rgba(255,255,255,0.15)', color: '#FFFFFF' },
+  },
+  /* -------- Body (sidebar + content) -------- */
+  body: {
+    display: 'flex',
+    flex: 1,
+    overflow: 'hidden',
+  },
+  /* -------- Left nav (Office 365 style) -------- */
   sidebar: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
-    transition: 'width 200ms ease',
+    backgroundColor: '#FFFFFF',
+    borderRight: `1px solid #EDEBE9`,
+    transition: 'width 200ms cubic-bezier(0.4,0,0.2,1)',
     overflow: 'hidden',
     flexShrink: 0,
   },
-  sidebarExpanded: { width: '260px' },
-  sidebarCollapsed: { width: '56px' },
-  logoArea: {
-    display: 'flex',
-    alignItems: 'center',
-    ...shorthands.gap('12px'),
-    ...shorthands.padding('16px', '16px'),
-    height: '56px',
-    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-    flexShrink: 0,
-  },
-  logoIcon: {
-    width: '32px',
-    height: '32px',
-    ...shorthands.borderRadius('8px'),
-    backgroundColor: tokens.colorBrandBackground,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: tokens.colorNeutralForegroundOnBrand,
-    fontWeight: tokens.fontWeightBold,
-    fontSize: '14px',
-    flexShrink: 0,
-  },
-  logoText: {
-    fontWeight: tokens.fontWeightSemibold,
-    fontSize: tokens.fontSizeBase400,
-    color: tokens.colorNeutralForeground1,
-    whiteSpace: 'nowrap',
-  },
-  roleArea: {
-    ...shorthands.padding('12px', '16px'),
-    borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
-  },
-  roleLabel: {
-    fontSize: tokens.fontSizeBase100,
-    fontWeight: tokens.fontWeightSemibold,
-    color: tokens.colorNeutralForeground3,
-    textTransform: 'uppercase' as const,
-    letterSpacing: '0.5px',
-  },
-  userName: {
-    fontSize: tokens.fontSizeBase300,
-    fontWeight: tokens.fontWeightSemibold,
-    color: tokens.colorNeutralForeground1,
-    marginTop: '2px',
-  },
-  nav: {
-    flex: 1,
-    overflowY: 'auto',
-    ...shorthands.padding('8px'),
+  sidebarExpanded: { width: '240px' },
+  sidebarCollapsed: { width: '48px' },
+  navSection: {
+    ...shorthands.padding('8px', '4px'),
     display: 'flex',
     flexDirection: 'column',
     ...shorthands.gap('2px'),
+    flex: 1,
+    overflowY: 'auto',
+  },
+  sectionLabel: {
+    fontSize: '11px',
+    fontWeight: 600,
+    color: '#605E5C',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.5px',
+    ...shorthands.padding('12px', '12px', '4px'),
   },
   navItem: {
     display: 'flex',
     alignItems: 'center',
     ...shorthands.gap('12px'),
-    ...shorthands.padding('10px', '12px'),
-    ...shorthands.borderRadius('8px'),
-    fontSize: tokens.fontSizeBase300,
-    fontWeight: tokens.fontWeightRegular,
-    color: tokens.colorNeutralForeground2,
+    ...shorthands.padding('8px', '12px'),
+    ...shorthands.borderRadius('4px'),
+    fontSize: '14px',
+    fontWeight: 400,
+    color: '#323130',
     textDecoration: 'none',
     cursor: 'pointer',
-    transition: 'all 150ms ease',
     whiteSpace: 'nowrap',
     ':hover': {
-      backgroundColor: tokens.colorNeutralBackground1Hover,
-      color: tokens.colorNeutralForeground1,
+      backgroundColor: '#F3F2F1',
     },
   },
   navItemActive: {
-    backgroundColor: tokens.colorBrandBackground2,
-    color: tokens.colorBrandForeground1,
-    fontWeight: tokens.fontWeightSemibold,
+    backgroundColor: '#DEECF9',
+    color: '#0078D4',
+    fontWeight: 600,
     ':hover': {
-      backgroundColor: tokens.colorBrandBackground2Hover,
-      color: tokens.colorBrandForeground1,
+      backgroundColor: '#C7E0F4',
     },
   },
   navIcon: {
@@ -124,27 +166,36 @@ const useStyles = makeStyles({
   navBadge: {
     marginLeft: 'auto',
   },
-  bottomSection: {
-    borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
-    ...shorthands.padding('8px'),
+  collapseBtn: {
     display: 'flex',
-    flexDirection: 'column',
-    ...shorthands.gap('2px'),
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '40px',
+    ...shorthands.borderRadius('4px'),
+    backgroundColor: 'transparent',
+    color: '#605E5C',
+    cursor: 'pointer',
+    ...shorthands.border('none'),
+    ':hover': { backgroundColor: '#F3F2F1' },
+  },
+  bottomNav: {
+    borderTop: '1px solid #EDEBE9',
+    ...shorthands.padding('4px'),
     flexShrink: 0,
   },
+  /* -------- Main content area -------- */
   main: {
     flex: 1,
     overflowY: 'auto',
-    backgroundColor: tokens.colorNeutralBackground3,
+    backgroundColor: '#F5F5F5',
   },
   mainContent: {
     ...shorthands.padding('24px', '32px'),
-    maxWidth: '1600px',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    maxWidth: '1400px',
   },
 });
 
+/* Office 365 nav config */
 const leadNavItems = [
   { path: '/lead/dashboard', label: 'Dashboard', icon: BoardRegular, iconActive: BoardFilled },
   { path: '/lead/wellbeing-risks', label: 'Wellbeing & Risks', icon: ShieldErrorRegular, iconActive: ShieldErrorFilled, badge: 3 },
@@ -163,7 +214,7 @@ const memberNavItems = [
 ];
 
 const AppShell = ({ children }: { children: React.ReactNode }) => {
-  const styles = useStyles();
+  const s = useStyles();
   const { role, userName, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -172,86 +223,88 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
   const navItems = role === 'team-lead' ? leadNavItems : memberNavItems;
 
   return (
-    <div className={styles.root}>
-      <aside className={mergeClasses(styles.sidebar, collapsed ? styles.sidebarCollapsed : styles.sidebarExpanded)}>
-        {/* Logo */}
-        <div className={styles.logoArea}>
-          <div className={styles.logoIcon}>L</div>
-          {!collapsed && <span className={styles.logoText}>LogIQ</span>}
+    <div className={s.root}>
+      {/* ── Office 365 Command Bar ── */}
+      <header className={s.commandBar}>
+        <div className={s.commandBarLeft}>
+          <button className={s.wafflBtn} aria-label="App launcher">
+            <GridRegular style={{ fontSize: 20 }} />
+          </button>
+          <span className={s.appName}>LogIQ</span>
         </div>
+        <div className={s.commandBarRight}>
+          <div className={s.userPill}>
+            <Avatar name={userName} size={24} color="colorful" />
+            <span>{userName}</span>
+          </div>
+          <Tooltip content="Sign out" relationship="label">
+            <button
+              className={s.signOutBtn}
+              onClick={() => { logout(); navigate('/'); }}
+              aria-label="Sign out"
+            >
+              <SignOutRegular style={{ fontSize: 16 }} />
+            </button>
+          </Tooltip>
+        </div>
+      </header>
 
-        {/* Role badge */}
-        {!collapsed && (
-          <div className={styles.roleArea}>
-            <div className={styles.roleLabel}>
+      <div className={s.body}>
+        {/* ── Left Navigation ── */}
+        <aside className={mergeClasses(s.sidebar, collapsed ? s.sidebarCollapsed : s.sidebarExpanded)}>
+          {!collapsed && (
+            <div className={s.sectionLabel}>
               {role === 'team-lead' ? 'Team Lead' : 'Team Member'}
             </div>
-            <div className={styles.userName}>{userName}</div>
-          </div>
-        )}
+          )}
 
-        {/* Nav */}
-        <nav className={styles.nav}>
-          {navItems.map(item => {
-            const isActive = location.pathname === item.path;
-            const Icon = isActive ? item.iconActive : item.icon;
-            const navLink = (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={mergeClasses(styles.navItem, isActive && styles.navItemActive)}
-              >
-                <Icon className={styles.navIcon} />
-                {!collapsed && <span>{item.label}</span>}
-                {item.badge && !collapsed && (
-                  <Badge
-                    size="small"
-                    appearance="filled"
-                    color="danger"
-                    className={styles.navBadge}
-                  >
-                    {item.badge}
-                  </Badge>
-                )}
-              </Link>
-            );
-
-            if (collapsed) {
-              return (
-                <Tooltip key={item.path} content={item.label} relationship="label" positioning="after">
-                  {navLink}
-                </Tooltip>
+          <nav className={s.navSection}>
+            {navItems.map(item => {
+              const isActive = location.pathname === item.path;
+              const Icon = isActive ? item.iconActive : item.icon;
+              const link = (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={mergeClasses(s.navItem, isActive && s.navItemActive)}
+                >
+                  <Icon className={s.navIcon} />
+                  {!collapsed && <span>{item.label}</span>}
+                  {item.badge && !collapsed && (
+                    <Badge size="small" appearance="filled" color="danger" className={s.navBadge}>
+                      {item.badge}
+                    </Badge>
+                  )}
+                </Link>
               );
-            }
-            return navLink;
-          })}
-        </nav>
 
-        {/* Bottom */}
-        <div className={styles.bottomSection}>
-          <button
-            onClick={() => { logout(); navigate('/'); }}
-            className={styles.navItem}
-          >
-            <SignOutRegular className={styles.navIcon} />
-            {!collapsed && <span>Sign Out</span>}
-          </button>
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className={styles.navItem}
-            style={{ justifyContent: 'center' }}
-          >
-            <NavigationRegular className={styles.navIcon} />
-          </button>
-        </div>
-      </aside>
+              return collapsed ? (
+                <Tooltip key={item.path} content={item.label} relationship="label" positioning="after">
+                  {link}
+                </Tooltip>
+              ) : link;
+            })}
+          </nav>
 
-      {/* Main */}
-      <main className={styles.main}>
-        <div className={styles.mainContent}>
-          {children}
-        </div>
-      </main>
+          <div className={s.bottomNav}>
+            <button
+              onClick={() => setCollapsed(!collapsed)}
+              className={s.collapseBtn}
+              style={{ width: '100%' }}
+              aria-label={collapsed ? 'Expand navigation' : 'Collapse navigation'}
+            >
+              <NavigationRegular style={{ fontSize: 18 }} />
+            </button>
+          </div>
+        </aside>
+
+        {/* ── Content Canvas ── */}
+        <main className={s.main}>
+          <div className={s.mainContent}>
+            {children}
+          </div>
+        </main>
+      </div>
 
       <FloatingCopilot />
     </div>
