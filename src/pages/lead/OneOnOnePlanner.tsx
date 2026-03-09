@@ -225,7 +225,7 @@ const OneOnOnePlanner = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <Input type="date" value={newDate} onChange={(_, d) => setNewDate(d.value)} />
                 <Dropdown value={`${newDuration} min`} onOptionSelect={(_, d) => setNewDuration(d.optionValue || '30')}>
-                  {['15', '30', '45', '60'].map(v => <Option key={v} value={v}>{v} min</Option>)}
+                  {['15', '30', '45', '60'].map(v => <Option key={v} value={v} text={`${v} min`}>{v} min</Option>)}
                 </Dropdown>
               </div>
             </div>
