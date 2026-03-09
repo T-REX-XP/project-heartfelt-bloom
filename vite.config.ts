@@ -17,8 +17,6 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-  },
-  optimizeDeps: {
-    exclude: ['@fluentui/react-components'],
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'scheduler'],
   },
 }));
