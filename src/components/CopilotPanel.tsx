@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   msgRowUser: { justifyContent: 'flex-end' },
   bubble: {
     maxWidth: '85%', ...shorthands.padding('10px', '14px'),
-    ...shorthands.borderRadius('8px'), fontSize: 13, lineHeight: '1.5',
+    ...shorthands.borderRadius('8px'), fontSize: '13px', lineHeight: '1.5',
   },
   bubbleAssistant: {
     backgroundColor: tokens.colorNeutralBackground3,
