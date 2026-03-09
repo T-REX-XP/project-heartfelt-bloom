@@ -14,7 +14,7 @@ import NotFound from "./pages/NotFound";
 
 // Lead pages
 import LeadDashboard from "@/pages/lead/LeadDashboard";
-import WellbeingRisks from "@/pages/lead/WellbeingRiskngRisks";
+import WellbeingRisks from "@/pages/lead/WellbeingRiskngRiskngRisks";
 import LeadTeam from "@/pages/lead/LeadTeam";
 import EmployeeDetail from "@/pages/lead/EmployeeDetail";
 import ConversationPrep from "@/pages/lead/ConversationPrep";
@@ -66,13 +66,12 @@ const App = () => (
 
             {/* Team Lead */}
             <Route path="/lead/dashboard" element={<LeadLayout><LeadDashboard /></LeadLayout>} />
-            <Route path="wellbeing-risks" element={<LeadLayout><WellbeingRiskSignals /></LeadLayout>} />
+            <Route wellbeing-risks" element={<LeadLayout><WellbeingRiskut><WellbeingRiskSignals /></LeadLayout>} />
             <Route path="/lead/team" element={<LeadLayout><LeadTeam /></LeadLayout>} />
             <Route path="/lead/team/:employeeId" element={<LeadLayout><EmployeeDetail /></LeadLayout>} />
             <Route path="/lead/conversation-prep/:employeeId" element={<LeadLayout><ConversationPrep /></LeadLayout>} />
             <Route path="/lead/delivery" element={<LeadLayout><LeadDelivery /></LeadLayout>} />
-            <Route path="/lead/skills" element={<LeadLayout><LeadSkills /></LeadLayout>} />
-            <Route path="/lead/churn-risk" element={<LeadLayout><ChurnRisk /></LeadLayout>} />
+            <Route path="/lead/skills" element={<LeadLayout><LeadSkills /></LeadLayout></LeadLayout>} />
             <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /></LeadLayout>} />
             <Route path="/lead/copilot" element={<LeadLayout><CopilotChat /></LeadLayout>} />
             <Route path="/lead/settings" element={<LeadLayout><SettingsPage /></LeadLayout>} />
