@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 const leadNavItems = [
   { path: '/lead/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/lead/wellbeing-risks', label: 'Wellbeing & Risks', icon: ShieldAlert, badge: 3 },
-  { path: '/lead/team', label: 'Team', icon: Users },
+  { path: '/lead/team', label: 'My Team', icon: Users },
   { path: '/lead/one-on-ones', label: '1:1 Planner', icon: CalendarCheck },
   { path: '/lead/settings', label: 'Settings', icon: Settings },
 ];

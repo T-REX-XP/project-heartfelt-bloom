@@ -11,7 +11,7 @@ const LeadTeam = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Team</h1>
+        <h1 className="text-2xl font-bold text-foreground">My Team</h1>
         <p className="text-muted-foreground text-sm mt-1">{employees.length} team members</p>
       </div>
 
