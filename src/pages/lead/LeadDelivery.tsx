@@ -1,6 +1,23 @@
-import { motion } from 'framer-motion';
+import { makeStyles, tokens, shorthands, Text, ProgressBar } from '@fluentui/react-components';
 import { employees } from '@/mocks/data';
-import { cn } from '@/lib/utils';
+
+const useStyles = makeStyles({
+  root: { display: 'flex', flexDirection: 'column', ...shorthands.gap('24px') },
+  sprintGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', ...shorthands.gap('16px') },
+  card: {
+    ...shorthands.padding('20px'),
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorNeutralBackground1,
+    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
+  },
+  empRow: {
+    display: 'flex', alignItems: 'center', ...shorthands.gap('16px'),
+    ...shorthands.padding('8px', '0'),
+  },
+  empName: { width: '120px', flexShrink: 0 },
+  barWrap: { flex: 1 },
+  score: { width: '40px', textAlign: 'right' as const, fontWeight: tokens.fontWeightBold },
+});
 
 const deliveryData = [
   { name: 'Sprint 10', completion: 92, velocity: 48 },
@@ -8,53 +25,51 @@ const deliveryData = [
   { name: 'Sprint 12', completion: 78, velocity: 39 },
 ];
 
-const LeadDelivery = () => (
-  <div className="space-y-6">
+const scoreColor = (v: number) =>
+  v >= 80 ? tokens.colorPaletteGreenForeground1 :
+  v >= 60 ? tokens.colorPaletteYellowForeground1 :
+  tokens.colorPaletteRedForeground1;
 
-    <div className="grid md:grid-cols-3 gap-4">
-      {deliveryData.map((sprint, i) => (
-        <motion.div key={sprint.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className="glass rounded-xl p-5">
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">{sprint.name}</h3>
-          <div className="flex items-end gap-4">
-            <div>
-              <div className={cn("text-3xl font-bold", sprint.completion >= 85 ? 'text-logiq-emerald' : sprint.completion >= 70 ? 'text-logiq-amber' : 'text-logiq-rose')}>{sprint.completion}%</div>
-              <div className="text-xs text-muted-foreground">Completion</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-foreground">{sprint.velocity}</div>
-              <div className="text-xs text-muted-foreground">Story Points</div>
+const LeadDelivery = () => {
+  const s = useStyles();
+  return (
+    <div className={s.root}>
+      <div className={s.sprintGrid}>
+        {deliveryData.map(sprint => (
+          <div key={sprint.name} className={s.card}>
+            <Text size={200} style={{ color: tokens.colorNeutralForeground3 }}>{sprint.name}</Text>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16, marginTop: 8 }}>
+              <div>
+                <div style={{ fontSize: 28, fontWeight: 700, color: scoreColor(sprint.completion) }}>{sprint.completion}%</div>
+                <Text size={100} style={{ color: tokens.colorNeutralForeground3 }}>Completion</Text>
+              </div>
+              <div>
+                <div style={{ fontSize: 22, fontWeight: 700 }}>{sprint.velocity}</div>
+                <Text size={100} style={{ color: tokens.colorNeutralForeground3 }}>Story Points</Text>
+              </div>
             </div>
           </div>
-        </motion.div>
-      ))}
-    </div>
+        ))}
+      </div>
 
-    <div className="glass rounded-xl p-6">
-      <h3 className="text-lg font-semibold text-foreground mb-4">Individual Delivery Scores</h3>
-      <div className="space-y-3">
-        {employees.map((emp, i) => (
-          <motion.div key={emp.id} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }} className="flex items-center gap-4">
-            <span className="w-32 text-sm text-foreground truncate">{emp.name}</span>
-            <div className="flex-1 h-3 bg-secondary rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${emp.deliveryScore}%` }}
-                transition={{ delay: 0.3 + i * 0.05, duration: 0.6 }}
-                className={cn("h-full rounded-full",
-                  emp.deliveryScore >= 80 ? 'bg-logiq-emerald' :
-                  emp.deliveryScore >= 60 ? 'bg-logiq-amber' : 'bg-logiq-rose'
-                )}
+      <div className={s.card}>
+        <Text size={400} weight="semibold" block style={{ marginBottom: 16 }}>Individual Delivery Scores</Text>
+        {employees.map(emp => (
+          <div key={emp.id} className={s.empRow}>
+            <Text size={300} className={s.empName} truncate>{emp.name}</Text>
+            <div className={s.barWrap}>
+              <ProgressBar
+                value={emp.deliveryScore / 100}
+                color={emp.deliveryScore >= 80 ? 'success' : emp.deliveryScore >= 60 ? 'warning' : 'error'}
+                thickness="large"
               />
             </div>
-            <span className={cn("text-sm font-bold w-10 text-right",
-              emp.deliveryScore >= 80 ? 'text-logiq-emerald' :
-              emp.deliveryScore >= 60 ? 'text-logiq-amber' : 'text-logiq-rose'
-            )}>{emp.deliveryScore}</span>
-          </motion.div>
+            <Text size={300} className={s.score} style={{ color: scoreColor(emp.deliveryScore) }}>{emp.deliveryScore}</Text>
+          </div>
         ))}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default LeadDelivery;
