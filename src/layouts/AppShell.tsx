@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import FloatingCopilot from '@/components/FloatingCopilot';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/store/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
