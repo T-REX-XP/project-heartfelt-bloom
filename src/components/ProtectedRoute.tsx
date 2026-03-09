@@ -11,14 +11,8 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   const { isAuthenticated, role } = useAuth();
   const location = useLocation();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  if (allowedRoles && role && !allowedRoles.includes(role)) {
-    return <Navigate to="/" replace />;
-  }
-
+  if (!isAuthenticated) return <Navigate to="/login" state={{ from: location }} replace />;
+  if (allowedRoles && role && !allowedRoles.includes(role)) return <Navigate to="/" replace />;
   return <>{children}</>;
 };
 
