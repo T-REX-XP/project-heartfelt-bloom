@@ -44,7 +44,8 @@ const useStyles = makeStyles({
     ...shorthands.borderRadius('8px'),
     backgroundColor: tokens.colorNeutralBackground3,
     ...shorthands.border('none'),
-    cursor: 'pointer', textAlign: 'left' as constze: tokens.fontSizeBase300Si'13px': 13, color: tokens.colorNeutralForeground2,
+    cursor: 'pointer', textAlign: 'left' as const,
+    fontSize: tokens.fontSizeBase300, color: tokens.colorNeutralForeground2,
     ':hover': { backgroundColor: tokens.colorNeutralBackground3Hover },
   },
 });
