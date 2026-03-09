@@ -9,7 +9,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import AppShell from "@/layouts/AppShell";
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
-import DemoSelector from "@/pages/DemoSelector";
+
 import NotFound from "./pages/NotFound";
 
 // Lead pages
