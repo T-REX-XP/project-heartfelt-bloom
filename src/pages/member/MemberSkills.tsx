@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
   },
   legend: { display: 'flex', alignItems: 'center', ...shorthands.gap('16px') },
-  legendDot: { width: 12, height: 6, ...shorthands.borderRadius('3px'), display: 'inline-block' },
+  legendDot: { width: '12px', height: '6px', ...shorthands.borderRadius('3px'), display: 'inline-block' },
   skillRow: { display: 'flex', flexDirection: 'column', ...shorthands.gap('4px'), marginTop: '16px' },
   skillHeader: { display: 'flex', justifyContent: 'space-between' },
   barWrap: { position: 'relative' as const, height: '12px', ...shorthands.borderRadius('6px'), backgroundColor: tokens.colorNeutralBackground4, overflow: 'hidden' },
