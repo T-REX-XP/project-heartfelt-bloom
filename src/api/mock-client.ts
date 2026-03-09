@@ -95,9 +95,8 @@ export class MockApiClient implements ApiClient {
 
   async getEmployeeTraining(employeeId: string) {
     await delay();
-    return ok(employeeTraining[employeeId] ?? []);
+    return ok(employeeTrainings[employeeId] ?? []);
   }
-
   async getEmployeeRoleHistory(employeeId: string) {
     await delay();
     return ok(employeeRoleHistory[employeeId] ?? []);
