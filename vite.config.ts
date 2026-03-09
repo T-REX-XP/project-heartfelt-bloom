@@ -18,4 +18,13 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    include: [
+      '@fluentui/react-components',
+      '@fluentui/react-icons',
+    ],
+    esbuildOptions: {
+      target: 'esnext',
+    },
+  },
 }));
