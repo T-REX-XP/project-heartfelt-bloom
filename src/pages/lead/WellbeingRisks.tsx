@@ -1,12 +1,41 @@
+import { useState, useMemo } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import SignalCard from '@/components/SignalCard';
 import { teamLeadSignals, employees, teamSummary } from '@/mocks/data';
 import { motion } from 'framer-motion';
 import { DollarSign, AlertTriangle, ShieldCheck, TrendingDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+const categories = ['all', 'wellbeing', 'skills', 'motivation', 'churn', 'delivery'] as const;
+const categoryLabels: Record<string, string> = {
+  all: 'All Types',
+  wellbeing: 'Wellbeing',
+  skills: 'Skills',
+  motivation: 'Motivation',
+  churn: 'Churn',
+  delivery: 'Delivery',
+};
+
 const WellbeingRisks = () => {
   const sorted = [...employees].sort((a, b) => b.churnRisk - a.churnRisk);
+  const [employeeFilter, setEmployeeFilter] = useState('all');
+  const [categoryFilter, setCategoryFilter] = useState('all');
+
+  const uniqueEmployees = useMemo(() => {
+    const names = teamLeadSignals
+      .map(s => s.employeeName)
+      .filter((n): n is string => !!n);
+    return Array.from(new Set(names));
+  }, []);
+
+  const filteredSignals = useMemo(() => {
+    return teamLeadSignals.filter(s => {
+      if (employeeFilter !== 'all' && s.employeeName !== employeeFilter) return false;
+      if (categoryFilter !== 'all' && s.category !== categoryFilter) return false;
+      return true;
+    });
+  }, [employeeFilter, categoryFilter]);
 
   return (
     <div className="space-y-6">
@@ -21,10 +50,52 @@ const WellbeingRisks = () => {
           <TabsTrigger value="churn-risk">Churn Risk</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="signals" className="space-y-3 mt-4">
-          {teamLeadSignals.map((signal, i) => (
-            <SignalCard key={signal.id} signal={signal} index={i} />
-          ))}
+        <TabsContent value="signals" className="space-y-4 mt-4">
+          <div className="flex items-center gap-3">
+            <Select value={employeeFilter} onValueChange={setEmployeeFilter}>
+              <SelectTrigger className="w-[180px] bg-card border-border">
+                <SelectValue placeholder="All Employees" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Employees</SelectItem>
+                {uniqueEmployees.map(name => (
+                  <SelectItem key={name} value={name}>{name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="w-[160px] bg-card border-border">
+                <SelectValue placeholder="All Types" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map(cat => (
+                  <SelectItem key={cat} value={cat}>{categoryLabels[cat]}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {(employeeFilter !== 'all' || categoryFilter !== 'all') && (
+              <button
+                onClick={() => { setEmployeeFilter('all'); setCategoryFilter('all'); }}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
+
+          {filteredSignals.length > 0 ? (
+            <div className="space-y-3">
+              {filteredSignals.map((signal, i) => (
+                <SignalCard key={signal.id} signal={signal} index={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="glass rounded-xl p-8 text-center text-muted-foreground text-sm">
+              No signals match the selected filters.
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="churn-risk" className="space-y-6 mt-4">
