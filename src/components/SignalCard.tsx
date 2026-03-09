@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   },
   critical: { borderLeftColor: tokens.colorPaletteRedBorder1 },
   warning: { borderLeftColor: tokens.colorPaletteYellowBorder1 },
-  info: { borderLeftColor: tokens.colorPaletteBlueBorder2 },
+  info: { borderLeftColor: tokens.colorNeutralStroke1 },
   positive: { borderLeftColor: tokens.colorPaletteGreenBorder1 },
   unread: { boxShadow: `inset 0 0 0 1px ${tokens.colorBrandStroke1}` },
   row: { display: 'flex', alignItems: 'flex-start', ...shorthands.gap('12px') },
