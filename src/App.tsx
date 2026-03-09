@@ -20,7 +20,7 @@ import EmployeeDetail from "@/pages/lead/EmployeeDetail";
 import ConversationPrep from "@/pages/lead/ConversationPrep";
 import LeadDelivery from "@/pages/lead/LeadDelivery";
 import LeadSkills from "@/pages/lead/LeadSkills";
-import OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
+import OneOnOnePlanner from "@/pages/lead/OneOnOneimport OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
 
 // Member pages
 import MemberDashboard from "@/pages/member/MemberDashboard";
@@ -70,8 +70,7 @@ const App = () => (
             <Route path="/lead/conversation-prep/:employeeId" element={<LeadLayout><ConversationPrep /></LeadLayout>} />
             <Route path="/lead/delivery" element={<LeadLayout><LeadDelivery /></LeadLayout>} />
             <Route path="/lead/skills" element={<LeadLayout><LeadSkills /></LeadLayout>} />
-            <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /></LeadLayout>} />
-            <Route path="/lead/copilot" element={<LeadLayout><C<LeadLayout><SettingsPage /></LeadLayout>} />
+            <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /settings" element={Route path="/lead/copilot" element={<LeadLayout><C<LeadLayout><SettingsPage /></LeadLayout>} />
 
             {/* Team Member */}
             <Route path="/member/dashboard" element={<MemberLayout><MemberDashboard /></MemberLayout>} />
