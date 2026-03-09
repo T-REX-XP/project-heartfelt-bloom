@@ -267,9 +267,9 @@ const LandingPage = () => {
           <motion.div {...fadeUp}>
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">Ready to See LogIQ in Action?</h2>
             <p className="text-lg text-muted-foreground mb-10">Experience proactive people intelligence. No setup required.</p>
-            <Link to="/demo">
+            <Link to="/login">
               <Button size="lg" className="gradient-primary text-primary-foreground border-0 px-10 text-lg glow-primary">
-                Launch Demo <ArrowRight className="w-5 h-5 ml-2" />
+                Get Started <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
           </motion.div>
