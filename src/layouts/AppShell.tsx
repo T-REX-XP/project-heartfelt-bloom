@@ -21,12 +21,9 @@ const leadNavItems = [
 const memberNavItems = [
   { path: '/member/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/member/signals', label: 'Signals', icon: Bell, badge: 2 },
-  { path: '/member/skills', label: 'Skills', icon: Brain },
-  { path: '/member/learning', label: 'Learning', icon: BookOpen },
   { path: '/member/idp', label: 'Dev Plan', icon: Target },
   { path: '/member/delivery', label: 'Delivery', icon: ClipboardList },
   { path: '/member/one-on-one-prep', label: '1:1 Prep', icon: MessageSquare },
-  
   { path: '/member/settings', label: 'Settings', icon: Settings },
 ];
 
