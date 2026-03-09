@@ -51,9 +51,9 @@ const LandingPage = () => {
             <Link to="/login">
               <Button variant="ghost" size="sm">Sign In</Button>
             </Link>
-            <Link to="/demo">
+            <Link to="/login">
               <Button size="sm" className="gradient-primary text-primary-foreground border-0">
-                Try Demo <ArrowRight className="w-4 h-4 ml-1" />
+                Get Started <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Link>
           </div>
