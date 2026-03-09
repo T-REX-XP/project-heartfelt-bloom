@@ -68,8 +68,6 @@ const App = () => (
               {/* Team Member */}
               <Route path="/member/dashboard" element={<MemberLayout><MemberDashboard /></MemberLayout>} />
               <Route path="/member/signals" element={<MemberLayout><MemberSignals /></MemberLayout>} />
-              <Route path="/member/skills" element={<MemberLayout><MemberSkills /></MemberLayout>} />
-              <Route path="/member/learning" element={<MemberLayout><MemberLearning /></MemberLayout>} />
               <Route path="/member/idp" element={<MemberLayout><MemberIDP /></MemberLayout>} />
               <Route path="/member/delivery" element={<MemberLayout><MemberDelivery /></MemberLayout>} />
               <Route path="/member/one-on-one-prep" element={<MemberLayout><MemberOneOnOnePrep /></MemberLayout>} />
