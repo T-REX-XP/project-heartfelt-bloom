@@ -135,6 +135,8 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           {children}
         </div>
       </main>
+
+      <FloatingCopilot />
     </div>
   );
 };
