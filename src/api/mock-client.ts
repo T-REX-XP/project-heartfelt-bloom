@@ -104,7 +104,7 @@ export class MockApiClient implements ApiClient {
 
   async getOneOnOneMeetings() {
     await delay();
-    return ok(oneOnOneMeetings);
+    return ok([]);
   }
 
   async getAgents() {
