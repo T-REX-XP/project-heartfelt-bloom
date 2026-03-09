@@ -27,7 +27,7 @@ import MemberLearning from "@/pages/member/MemberLearning";
 import MemberIDP from "@/pages/member/MemberIDP";
 import MemberDelivery from "@/pages/member/MemberDelivery";
 import MemberOneOnOnePrep from "@/pages/member/MemberOneOnOnePrep";
-import MemberCoach from "@/pages/member/MemberCoach";
+
 
 import SettingsPage from "@/pages/SettingsPage";
 
@@ -75,7 +75,7 @@ const App = () => (
               <Route path="/member/idp" element={<MemberLayout><MemberIDP /></MemberLayout>} />
               <Route path="/member/delivery" element={<MemberLayout><MemberDelivery /></MemberLayout>} />
               <Route path="/member/one-on-one-prep" element={<MemberLayout><MemberOneOnOnePrep /></MemberLayout>} />
-              <Route path="/member/coach" element={<MemberLayout><MemberCoach /></MemberLayout>} />
+              
               <Route path="/member/settings" element={<MemberLayout><SettingsPage /></MemberLayout>} />
 
               <Route path="*" element={<NotFound />} />

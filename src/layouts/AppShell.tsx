@@ -26,7 +26,7 @@ const memberNavItems = [
   { path: '/member/idp', label: 'Dev Plan', icon: Target },
   { path: '/member/delivery', label: 'Delivery', icon: ClipboardList },
   { path: '/member/one-on-one-prep', label: '1:1 Prep', icon: MessageSquare },
-  { path: '/member/coach', label: 'AI Coach', icon: GraduationCap },
+  
   { path: '/member/settings', label: 'Settings', icon: Settings },
 ];
 
