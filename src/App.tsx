@@ -9,7 +9,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import AppShell from "@/layouts/AppShell";
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
-import DemoSelector from "@/pages/DemoSelector";
+
 import NotFound from "./pages/NotFound";
 
 // Lead pages
@@ -38,13 +38,13 @@ import SettingsPage from "@/pages/SettingsPage";
 const queryClient = new QueryClient();
 
 const LeadLayout = ({ children }: { children: React.ReactNode }) => (
-  <ProtectedRoute allowedRoles={['team-lead', 'admin']}>
+  <ProtectedRoute allowedRoles={['team-lead']}>
     <AppShell>{children}</AppShell>
   </ProtectedRoute>
 );
 
 const MemberLayout = ({ children }: { children: React.ReactNode }) => (
-  <ProtectedRoute allowedRoles={['team-member', 'admin']}>
+  <ProtectedRoute allowedRoles={['team-member']}>
     <AppShell>{children}</AppShell>
   </ProtectedRoute>
 );
@@ -61,7 +61,7 @@ const App = () => (
             {/* Public */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/demo" element={<DemoSelector />} />
+            
 
             {/* Team Lead */}
             <Route path="/lead/dashboard" element={<LeadLayout><LeadDashboard /></LeadLayout>} />

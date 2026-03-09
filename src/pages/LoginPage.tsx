@@ -5,7 +5,7 @@ import { Zap, Mail, Lock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/store/AuthContext';
-import { Link } from 'react-router-dom';
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -64,11 +64,6 @@ const LoginPage = () => {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <Link to="/demo" className="text-sm text-primary hover:underline">
-              Or try the demo →
-            </Link>
-          </div>
         </div>
       </motion.div>
     </div>
