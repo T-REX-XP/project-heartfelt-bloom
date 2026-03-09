@@ -17,8 +17,6 @@ import WellbeingRisks from "@/pages/lead/WellbeingRisks";
 import LeadTeam from "@/pages/lead/LeadTeam";
 import EmployeeDetail from "@/pages/lead/EmployeeDetail";
 import ConversationPrep from "@/pages/lead/ConversationPrep";
-import LeadDelivery from "@/pages/lead/LeadDelivery";
-import LeadSkills from "@/pages/lead/LeadSkills";
 import OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
 
 // Member pages
@@ -66,8 +64,6 @@ const App = () => (
               <Route path="/lead/team" element={<LeadLayout><LeadTeam /></LeadLayout>} />
               <Route path="/lead/team/:employeeId" element={<LeadLayout><EmployeeDetail /></LeadLayout>} />
               <Route path="/lead/conversation-prep/:employeeId" element={<LeadLayout><ConversationPrep /></LeadLayout>} />
-              <Route path="/lead/delivery" element={<LeadLayout><LeadDelivery /></LeadLayout>} />
-              <Route path="/lead/skills" element={<LeadLayout><LeadSkills /></LeadLayout>} />
               <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /></LeadLayout>} />
               <Route path="/lead/settings" element={<LeadLayout><SettingsPage /></LeadLayout>} />
 

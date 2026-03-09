@@ -48,29 +48,6 @@ const LeadSkills = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-            <Grid3X3 className="w-6 h-6 text-primary" />
-            Skills Matrix
-          </h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            Interactive skill coverage across {employees.length} team members · {allSkills.length} tracked skills
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <ToggleGroup type="single" value={view} onValueChange={(v) => v && setView(v as 'matrix' | 'cards')}>
-            <ToggleGroupItem value="matrix" aria-label="Matrix view" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
-              <Grid3X3 className="w-4 h-4" />
-            </ToggleGroupItem>
-            <ToggleGroupItem value="cards" aria-label="Card view" className="data-[state=on]:bg-primary data-[state=on]:text-primary-foreground">
-              <Users className="w-4 h-4" />
-            </ToggleGroupItem>
-          </ToggleGroup>
-        </div>
-      </div>
-
       {/* Search & Filters */}
       <div className="space-y-3">
         <div className="relative">
