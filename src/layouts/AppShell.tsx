@@ -1,33 +1,169 @@
 import { useState } from 'react';
-import FloatingCopilot from '@/components/FloatingCopilot';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/store/AuthContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { makeStyles, tokens, shorthands, mergeClasses, Badge, Tooltip, Avatar } from '@fluentui/react-components';
 import {
-  LayoutDashboard, Bell, Users, BarChart3, Brain, ShieldAlert,
-  MessageSquare, Settings, GraduationCap, BookOpen, Target,
-  ClipboardList, Bot, LogOut, ChevronLeft, ChevronRight, Zap, CalendarCheck
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  BoardRegular, BoardFilled,
+  AlertRegular, AlertFilled,
+  PeopleTeamRegular, PeopleTeamFilled,
+  CalendarLtrRegular, CalendarLtrFilled,
+  SettingsRegular, SettingsFilled,
+  SignOutRegular,
+  NavigationRegular,
+  ChatSparkleRegular, ChatSparkleFilled,
+  ShieldErrorRegular, ShieldErrorFilled,
+  DocumentBulletListRegular, DocumentBulletListFilled,
+  BookRegular, BookFilled,
+  PersonRegular, PersonFilled,
+  ClipboardTaskListLtrRegular, ClipboardTaskListLtrFilled,
+} from '@fluentui/react-icons';
+import FloatingCopilot from '@/components/FloatingCopilot';
+
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    height: '100vh',
+    backgroundColor: tokens.colorNeutralBackground3,
+  },
+  sidebar: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: tokens.colorNeutralBackground1,
+    borderRight: `1px solid ${tokens.colorNeutralStroke2}`,
+    transition: 'width 200ms ease',
+    overflow: 'hidden',
+    flexShrink: 0,
+  },
+  sidebarExpanded: { width: '260px' },
+  sidebarCollapsed: { width: '56px' },
+  logoArea: {
+    display: 'flex',
+    alignItems: 'center',
+    ...shorthands.gap('12px'),
+    ...shorthands.padding('16px', '16px'),
+    height: '56px',
+    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+    flexShrink: 0,
+  },
+  logoIcon: {
+    width: '32px',
+    height: '32px',
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorBrandBackground,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: tokens.colorNeutralForegroundOnBrand,
+    fontWeight: tokens.fontWeightBold,
+    fontSize: '14px',
+    flexShrink: 0,
+  },
+  logoText: {
+    fontWeight: tokens.fontWeightSemibold,
+    fontSize: tokens.fontSizeBase400,
+    color: tokens.colorNeutralForeground1,
+    whiteSpace: 'nowrap',
+  },
+  roleArea: {
+    ...shorthands.padding('12px', '16px'),
+    borderBottom: `1px solid ${tokens.colorNeutralStroke3}`,
+  },
+  roleLabel: {
+    fontSize: tokens.fontSizeBase100,
+    fontWeight: tokens.fontWeightSemibold,
+    color: tokens.colorNeutralForeground3,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.5px',
+  },
+  userName: {
+    fontSize: tokens.fontSizeBase300,
+    fontWeight: tokens.fontWeightSemibold,
+    color: tokens.colorNeutralForeground1,
+    marginTop: '2px',
+  },
+  nav: {
+    flex: 1,
+    overflowY: 'auto',
+    ...shorthands.padding('8px'),
+    display: 'flex',
+    flexDirection: 'column',
+    ...shorthands.gap('2px'),
+  },
+  navItem: {
+    display: 'flex',
+    alignItems: 'center',
+    ...shorthands.gap('12px'),
+    ...shorthands.padding('10px', '12px'),
+    ...shorthands.borderRadius('8px'),
+    fontSize: tokens.fontSizeBase300,
+    fontWeight: tokens.fontWeightRegular,
+    color: tokens.colorNeutralForeground2,
+    textDecoration: 'none',
+    cursor: 'pointer',
+    transition: 'all 150ms ease',
+    whiteSpace: 'nowrap',
+    ':hover': {
+      backgroundColor: tokens.colorNeutralBackground1Hover,
+      color: tokens.colorNeutralForeground1,
+    },
+  },
+  navItemActive: {
+    backgroundColor: tokens.colorBrandBackground2,
+    color: tokens.colorBrandForeground1,
+    fontWeight: tokens.fontWeightSemibold,
+    ':hover': {
+      backgroundColor: tokens.colorBrandBackground2Hover,
+      color: tokens.colorBrandForeground1,
+    },
+  },
+  navIcon: {
+    fontSize: '20px',
+    flexShrink: 0,
+  },
+  navBadge: {
+    marginLeft: 'auto',
+  },
+  bottomSection: {
+    borderTop: `1px solid ${tokens.colorNeutralStroke2}`,
+    ...shorthands.padding('8px'),
+    display: 'flex',
+    flexDirection: 'column',
+    ...shorthands.gap('2px'),
+    flexShrink: 0,
+  },
+  main: {
+    flex: 1,
+    overflowY: 'auto',
+    backgroundColor: tokens.colorNeutralBackground3,
+  },
+  mainContent: {
+    ...shorthands.padding('24px', '32px'),
+    maxWidth: '1600px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+});
 
 const leadNavItems = [
-  { path: '/lead/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/lead/wellbeing-risks', label: 'Wellbeing & Risks', icon: ShieldAlert, badge: 3 },
-  { path: '/lead/team', label: 'My Team', icon: Users },
-  { path: '/lead/one-on-ones', label: '1:1 Planner', icon: CalendarCheck },
-  { path: '/lead/settings', label: 'Settings', icon: Settings },
+  { path: '/lead/dashboard', label: 'Dashboard', icon: BoardRegular, iconActive: BoardFilled },
+  { path: '/lead/wellbeing-risks', label: 'Wellbeing & Risks', icon: ShieldErrorRegular, iconActive: ShieldErrorFilled, badge: 3 },
+  { path: '/lead/team', label: 'My Team', icon: PeopleTeamRegular, iconActive: PeopleTeamFilled },
+  { path: '/lead/one-on-ones', label: '1:1 Planner', icon: CalendarLtrRegular, iconActive: CalendarLtrFilled },
+  { path: '/lead/settings', label: 'Settings', icon: SettingsRegular, iconActive: SettingsFilled },
 ];
 
 const memberNavItems = [
-  { path: '/member/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/member/signals', label: 'Signals', icon: Bell, badge: 2 },
-  { path: '/member/idp', label: 'Dev Plan', icon: Target },
-  { path: '/member/delivery', label: 'Delivery', icon: ClipboardList },
-  { path: '/member/one-on-one-prep', label: '1:1 Prep', icon: MessageSquare },
-  { path: '/member/settings', label: 'Settings', icon: Settings },
+  { path: '/member/dashboard', label: 'Dashboard', icon: BoardRegular, iconActive: BoardFilled },
+  { path: '/member/signals', label: 'Signals', icon: AlertRegular, iconActive: AlertFilled, badge: 2 },
+  { path: '/member/idp', label: 'Dev Plan', icon: BookRegular, iconActive: BookFilled },
+  { path: '/member/delivery', label: 'Delivery', icon: ClipboardTaskListLtrRegular, iconActive: ClipboardTaskListLtrFilled },
+  { path: '/member/one-on-one-prep', label: '1:1 Prep', icon: ChatSparkleRegular, iconActive: ChatSparkleFilled },
+  { path: '/member/settings', label: 'Settings', icon: SettingsRegular, iconActive: SettingsFilled },
 ];
 
 const AppShell = ({ children }: { children: React.ReactNode }) => {
+  const styles = useStyles();
   const { role, userName, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,96 +172,83 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
   const navItems = role === 'team-lead' ? leadNavItems : memberNavItems;
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar */}
-      <motion.aside
-        animate={{ width: collapsed ? 72 : 260 }}
-        transition={{ duration: 0.2 }}
-        className="h-full flex flex-col border-r border-border bg-card/50 backdrop-blur-sm z-20"
-      >
+    <div className={styles.root}>
+      <aside className={mergeClasses(styles.sidebar, collapsed ? styles.sidebarCollapsed : styles.sidebarExpanded)}>
         {/* Logo */}
-        <div className="flex items-center gap-3 px-4 h-16 border-b border-border">
-          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
-            <Zap className="w-4 h-4 text-primary-foreground" />
-          </div>
-          <AnimatePresence>
-            {!collapsed && (
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="font-bold text-lg text-gradient"
-              >
-                LogIQ
-              </motion.span>
-            )}
-          </AnimatePresence>
+        <div className={styles.logoArea}>
+          <div className={styles.logoIcon}>L</div>
+          {!collapsed && <span className={styles.logoText}>LogIQ</span>}
         </div>
 
         {/* Role badge */}
         {!collapsed && (
-          <div className="px-4 py-3">
-            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          <div className={styles.roleArea}>
+            <div className={styles.roleLabel}>
               {role === 'team-lead' ? 'Team Lead' : 'Team Member'}
             </div>
-            <div className="text-sm font-semibold text-foreground mt-0.5">{userName}</div>
+            <div className={styles.userName}>{userName}</div>
           </div>
         )}
 
         {/* Nav */}
-        <nav className="flex-1 px-2 py-2 space-y-1 overflow-y-auto">
+        <nav className={styles.nav}>
           {navItems.map(item => {
             const isActive = location.pathname === item.path;
-            return (
+            const Icon = isActive ? item.iconActive : item.icon;
+            const navLink = (
               <Link
                 key={item.path}
                 to={item.path}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
-                  isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                )}
+                className={mergeClasses(styles.navItem, isActive && styles.navItemActive)}
               >
-                <item.icon className="w-5 h-5 flex-shrink-0" />
-                <AnimatePresence>
-                  {!collapsed && (
-                    <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1">
-                      {item.label}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
+                <Icon className={styles.navIcon} />
+                {!collapsed && <span>{item.label}</span>}
                 {item.badge && !collapsed && (
-                  <span className="w-5 h-5 rounded-full bg-destructive text-destructive-foreground text-xs flex items-center justify-center">
+                  <Badge
+                    size="small"
+                    appearance="filled"
+                    color="danger"
+                    className={styles.navBadge}
+                  >
                     {item.badge}
-                  </span>
+                  </Badge>
                 )}
               </Link>
             );
+
+            if (collapsed) {
+              return (
+                <Tooltip key={item.path} content={item.label} relationship="label" positioning="after">
+                  {navLink}
+                </Tooltip>
+              );
+            }
+            return navLink;
           })}
         </nav>
 
         {/* Bottom */}
-        <div className="border-t border-border p-2 space-y-1">
+        <div className={styles.bottomSection}>
           <button
             onClick={() => { logout(); navigate('/'); }}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 w-full transition-colors"
+            className={styles.navItem}
           >
-            <LogOut className="w-5 h-5" />
+            <SignOutRegular className={styles.navIcon} />
             {!collapsed && <span>Sign Out</span>}
           </button>
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="flex items-center justify-center w-full py-2 text-muted-foreground hover:text-foreground transition-colors"
+            className={styles.navItem}
+            style={{ justifyContent: 'center' }}
           >
-            {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+            <NavigationRegular className={styles.navIcon} />
           </button>
         </div>
-      </motion.aside>
+      </aside>
 
       {/* Main */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="p-6 lg:p-8 max-w-[1600px] mx-auto">
+      <main className={styles.main}>
+        <div className={styles.mainContent}>
           {children}
         </div>
       </main>

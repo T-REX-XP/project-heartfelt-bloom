@@ -1,11 +1,6 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/store/AuthContext";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import AppShell from "@/layouts/AppShell";
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
@@ -26,8 +21,8 @@ import MemberIDP from "@/pages/member/MemberIDP";
 import MemberDelivery from "@/pages/member/MemberDelivery";
 import MemberOneOnOnePrep from "@/pages/member/MemberOneOnOnePrep";
 
-
 import SettingsPage from "@/pages/SettingsPage";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -45,41 +40,34 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => (
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="light">
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              {/* Public */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<LoginPage />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
-              {/* Team Lead */}
-              <Route path="/lead/dashboard" element={<LeadLayout><LeadDashboard /></LeadLayout>} />
-              <Route path="/lead/wellbeing-risks" element={<LeadLayout><WellbeingRisks /></LeadLayout>} />
-              <Route path="/lead/team" element={<LeadLayout><LeadTeam /></LeadLayout>} />
-              <Route path="/lead/team/:employeeId" element={<LeadLayout><EmployeeDetail /></LeadLayout>} />
-              <Route path="/lead/conversation-prep/:employeeId" element={<LeadLayout><ConversationPrep /></LeadLayout>} />
-              <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /></LeadLayout>} />
-              <Route path="/lead/settings" element={<LeadLayout><SettingsPage /></LeadLayout>} />
+          {/* Team Lead */}
+          <Route path="/lead/dashboard" element={<LeadLayout><LeadDashboard /></LeadLayout>} />
+          <Route path="/lead/wellbeing-risks" element={<LeadLayout><WellbeingRisks /></LeadLayout>} />
+          <Route path="/lead/team" element={<LeadLayout><LeadTeam /></LeadLayout>} />
+          <Route path="/lead/team/:employeeId" element={<LeadLayout><EmployeeDetail /></LeadLayout>} />
+          <Route path="/lead/conversation-prep/:employeeId" element={<LeadLayout><ConversationPrep /></LeadLayout>} />
+          <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /></LeadLayout>} />
+          <Route path="/lead/settings" element={<LeadLayout><SettingsPage /></LeadLayout>} />
 
-              {/* Team Member */}
-              <Route path="/member/dashboard" element={<MemberLayout><MemberDashboard /></MemberLayout>} />
-              <Route path="/member/signals" element={<MemberLayout><MemberSignals /></MemberLayout>} />
-              <Route path="/member/idp" element={<MemberLayout><MemberIDP /></MemberLayout>} />
-              <Route path="/member/delivery" element={<MemberLayout><MemberDelivery /></MemberLayout>} />
-              <Route path="/member/one-on-one-prep" element={<MemberLayout><MemberOneOnOnePrep /></MemberLayout>} />
-              
-              <Route path="/member/settings" element={<MemberLayout><SettingsPage /></MemberLayout>} />
+          {/* Team Member */}
+          <Route path="/member/dashboard" element={<MemberLayout><MemberDashboard /></MemberLayout>} />
+          <Route path="/member/signals" element={<MemberLayout><MemberSignals /></MemberLayout>} />
+          <Route path="/member/idp" element={<MemberLayout><MemberIDP /></MemberLayout>} />
+          <Route path="/member/delivery" element={<MemberLayout><MemberDelivery /></MemberLayout>} />
+          <Route path="/member/one-on-one-prep" element={<MemberLayout><MemberOneOnOnePrep /></MemberLayout>} />
+          <Route path="/member/settings" element={<MemberLayout><SettingsPage /></MemberLayout>} />
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-    </ThemeProvider>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
