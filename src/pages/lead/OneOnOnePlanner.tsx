@@ -45,7 +45,7 @@ const useStyles = makeStyles({
     ...shorthands.border('1px', 'solid', tokens.colorBrandStroke1),
   },
   dayMeetingBtn: {
-    width: '100%', fontSize: 10, fontWeight: 500,
+    width: '100%', fontSize: '10px', fontWeight: 500,
     ...shorthands.borderRadius('4px'),
     ...shorthands.padding('2px', '4px'),
     cursor: 'pointer', textAlign: 'left' as const,
