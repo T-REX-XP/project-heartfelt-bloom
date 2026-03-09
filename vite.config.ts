@@ -19,10 +19,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: [
-      '@fluentui/react-components',
-      '@fluentui/react-icons',
-    ],
+    include: ['@fluentui/react-components'],
+    exclude: ['@fluentui/react-icons'],
     esbuildOptions: {
       target: 'esnext',
     },
