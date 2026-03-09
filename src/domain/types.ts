@@ -1,4 +1,4 @@
-export type Role = 'team-lead' | 'team-member' | 'admin';
+export type Role = 'team-lead' | 'team-member';
 
 export type KPIStatus = 'green' | 'yellow' | 'red';
 export type SignalSeverity = 'critical' | 'warning' | 'info' | 'positive';

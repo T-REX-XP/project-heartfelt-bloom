@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const switchRole = useCallback((role: Role) => {
-    setState(prev => ({ ...prev, role, userName: role === 'team-lead' ? 'Jordan Mitchell' : role === 'team-member' ? 'Alex Chen' : 'Admin' }));
+    setState(prev => ({ ...prev, role, userName: role === 'team-lead' ? 'Jordan Mitchell' : 'Alex Chen' }));
   }, []);
 
   return (
