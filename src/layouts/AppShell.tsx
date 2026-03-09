@@ -11,11 +11,10 @@ import { cn } from '@/lib/utils';
 
 const leadNavItems = [
   { path: '/lead/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/lead/signals', label: 'Signals', icon: Bell, badge: 3 },
+  { path: '/lead/wellbeing-risks', label: 'Wellbeing & Risks', icon: ShieldAlert, badge: 3 },
   { path: '/lead/team', label: 'Team', icon: Users },
   { path: '/lead/delivery', label: 'Delivery', icon: BarChart3 },
   { path: '/lead/skills', label: 'Skills', icon: Brain },
-  { path: '/lead/churn-risk', label: 'Churn Risk', icon: ShieldAlert },
   { path: '/lead/one-on-ones', label: '1:1 Planner', icon: CalendarCheck },
   { path: '/lead/copilot', label: 'AI Copilot', icon: Bot },
   { path: '/lead/settings', label: 'Settings', icon: Settings },
