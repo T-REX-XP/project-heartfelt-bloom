@@ -17,8 +17,6 @@ import WellbeingRisks from "@/pages/lead/WellbeingRisks";
 import LeadTeam from "@/pages/lead/LeadTeam";
 import EmployeeDetail from "@/pages/lead/EmployeeDetail";
 import ConversationPrep from "@/pages/lead/ConversationPrep";
-import LeadDelivery from "@/pages/lead/LeadDelivery";
-import LeadSkills from "@/pages/lead/LeadSkills";
 import OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
 
 // Member pages
