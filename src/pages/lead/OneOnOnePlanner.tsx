@@ -303,7 +303,7 @@ const OneOnOnePlanner = () => {
           {tab === 'past' && past.map(m => (
             <button key={m.id} onClick={() => setSelectedMeeting(m)} className={`${s.meetingBtn} ${selectedMeeting?.id === m.id ? s.meetingBtnActive : ''}`}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <Avatar icon={<CheckmarkCircleRegular />} size={32} color="success" />
+                <Avatar icon={<CheckmarkCircleRegular />} size={32} color="dark-green" />
                 <div>
                   <Text size={300} weight="semibold" block>{m.employeeName}</Text>
                   <Text size={100} style={{ color: tokens.colorNeutralForeground3 }}>{format(parseISO(m.date), 'MMM d, yyyy')} · {m.topics.filter(t => t.status === 'discussed').length}/{m.topics.length} covered</Text>

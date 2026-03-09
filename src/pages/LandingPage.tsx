@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     ...shorthands.padding('4px', '16px'),
     ...shorthands.borderRadius('20px'),
     backgroundColor: tokens.colorNeutralBackground3,
-    fontSize: 13, color: tokens.colorNeutralForeground2,
+    fontSize: '13px', color: tokens.colorNeutralForeground2,
     marginBottom: '32px',
   },
   section: { ...shorthands.padding('80px', '24px'), maxWidth: '1200px', marginLeft: 'auto', marginRight: 'auto' },

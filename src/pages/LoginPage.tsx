@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     position: 'absolute' as const, top: '24px', left: '24px',
     display: 'flex', alignItems: 'center', ...shorthands.gap('4px'),
     color: tokens.colorNeutralForeground3, cursor: 'pointer',
-    fontSize: 13, textDecoration: 'none',
+    fontSize: '13px', textDecoration: 'none',
     ':hover': { color: tokens.colorNeutralForeground1 },
     backgroundColor: 'transparent', ...shorthands.border('none'),
   },
