@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import FloatingCopilot from '@/components/FloatingCopilot';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/store/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,7 +17,6 @@ const leadNavItems = [
   { path: '/lead/delivery', label: 'Delivery', icon: BarChart3 },
   { path: '/lead/skills', label: 'Skills', icon: Brain },
   { path: '/lead/one-on-ones', label: '1:1 Planner', icon: CalendarCheck },
-  { path: '/lead/copilot', label: 'AI Copilot', icon: Bot },
   { path: '/lead/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -134,6 +134,8 @@ const AppShell = ({ children }: { children: React.ReactNode }) => {
           {children}
         </div>
       </main>
+
+      <FloatingCopilot />
     </div>
   );
 };
