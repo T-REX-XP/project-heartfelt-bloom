@@ -20,7 +20,7 @@ import EmployeeDetail from "@/pages/lead/EmployeeDetail";
 import ConversationPrep from "@/pages/lead/ConversationPrep";
 import LeadDelivery from "@/pages/lead/LeadDelivery";
 import LeadSkills from "@/pages/lead/LeadSkills";
-import CopilotChat from "@/pages/lead/CopilotChat";
+
 import OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
 
 // Member pages
