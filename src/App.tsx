@@ -44,7 +44,7 @@ const LeadLayout = ({ children }: { children: React.ReactNode }) => (
 );
 
 const MemberLayout = ({ children }: { children: React.ReactNode }) => (
-  <ProtectedRoute allowedRoles={['team-member', 'admin']}>
+  <ProtectedRoute allowedRoles={['team-member']}>
     <AppShell>{children}</AppShell>
   </ProtectedRoute>
 );
