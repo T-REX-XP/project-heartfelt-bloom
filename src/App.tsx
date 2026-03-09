@@ -14,7 +14,7 @@ import NotFound from "./pages/NotFound";
 
 // Lead pages
 import LeadDashboard from "@/pages/lead/LeadDashboard";
-import WellbeingRisks from "@/pages/lead/WellbeingRisks";
+import WellbeingRisks from "@/pages/lead/WellbeingRiskngRisks";
 import LeadTeam from "@/pages/lead/LeadTeam";
 import EmployeeDetail from "@/pages/lead/EmployeeDetail";
 import ConversationPrep from "@/pages/lead/ConversationPrep";
@@ -66,7 +66,7 @@ const App = () => (
 
             {/* Team Lead */}
             <Route path="/lead/dashboard" element={<LeadLayout><LeadDashboard /></LeadLayout>} />
-            <Route path="/lead/signals" element={<LeadLayout><LeadSignals /></LeadLayout>} />
+            <Route path="wellbeing-risks" element={<LeadLayout><WellbeingRiskSignals /></LeadLayout>} />
             <Route path="/lead/team" element={<LeadLayout><LeadTeam /></LeadLayout>} />
             <Route path="/lead/team/:employeeId" element={<LeadLayout><EmployeeDetail /></LeadLayout>} />
             <Route path="/lead/conversation-prep/:employeeId" element={<LeadLayout><ConversationPrep /></LeadLayout>} />
