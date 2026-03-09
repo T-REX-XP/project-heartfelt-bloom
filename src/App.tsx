@@ -35,7 +35,8 @@ import MemberOneOnOnePrep from "@/pages/member/MemberOneOnOnePrep";
 import MemberCoach from "@/pages/member/MemberCoach";
 
 import SettingsPage from "@/pages/SettingsPage";
-{ children }: { children: React.ReactNode }) => (
+
+const LeadLayout = ({ children }: { children: React.ReactNode }) => (
   <ProtectedRoute allowedRoles={['team-lead', 'admin']}>
     <AppShell>{children}</AppShell>
   </ProtectedRoute>
