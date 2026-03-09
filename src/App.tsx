@@ -14,7 +14,7 @@ import NotFound from "./pages/NotFound";
 
 // Lead pages
 import LeadDashboard from "@/pages/lead/LeadDashboard";
-import LeadSignals from "@/pages/lead/LeadSignals";
+import WellbeingRisks from "@/pages/lead/WellbeingRisks";
 import LeadTeam from "@/pages/lead/LeadTeam";
 import EmployeeDetail from "@/pages/lead/EmployeeDetail";
 import ConversationPrep from "@/pages/lead/ConversationPrep";
