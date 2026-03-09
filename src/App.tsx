@@ -35,7 +35,7 @@ import MemberOneOnOnePrep from "@/pages/member/MemberOneOnOnePrep";
 import MemberCoach from "@/pages/member/MemberCoach";
 
 import SettingsPage from "@/pages/SettingsPage";
-import ArchitecturePage from "@/pages/admin/ArchitecturePage";
+
 
 const queryClient = new QueryClient();
 
