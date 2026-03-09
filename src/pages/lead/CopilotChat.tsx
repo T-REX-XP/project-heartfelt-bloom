@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     backgroundColor: tokens.colorNeutralBackground1,
     ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
     cursor: 'pointer', textAlign: 'left' as const,
-    fontSize: 13, color: tokens.colorNeutralForeground2,
+    fontSize: '13px', color: tokens.colorNeutralForeground2,
     ':hover': { backgroundColor: tokens.colorNeutralBackground1Hover },
   },
   messages: { display: 'flex', flexDirection: 'column', ...shorthands.gap('16px'), maxHeight: '500px', overflowY: 'auto' },
