@@ -14,8 +14,6 @@ const leadNavItems = [
   { path: '/lead/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/lead/wellbeing-risks', label: 'Wellbeing & Risks', icon: ShieldAlert, badge: 3 },
   { path: '/lead/team', label: 'Team', icon: Users },
-  { path: '/lead/delivery', label: 'Delivery', icon: BarChart3 },
-  { path: '/lead/skills', label: 'Skills', icon: Brain },
   { path: '/lead/one-on-ones', label: '1:1 Planner', icon: CalendarCheck },
   { path: '/lead/settings', label: 'Settings', icon: Settings },
 ];
