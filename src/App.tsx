@@ -36,6 +36,8 @@ import MemberCoach from "@/pages/member/MemberCoach";
 
 import SettingsPage from "@/pages/SettingsPage";
 
+const queryClient = new QueryClient();
+
 const LeadLayout = ({ children }: { children: React.ReactNode }) => (
   <ProtectedRoute allowedRoles={['team-lead', 'admin']}>
     <AppShell>{children}</AppShell>
