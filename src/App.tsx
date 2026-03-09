@@ -22,8 +22,6 @@ import OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
 // Member pages
 import MemberDashboard from "@/pages/member/MemberDashboard";
 import MemberSignals from "@/pages/member/MemberSignals";
-import MemberSkills from "@/pages/member/MemberSkills";
-import MemberLearning from "@/pages/member/MemberLearning";
 import MemberIDP from "@/pages/member/MemberIDP";
 import MemberDelivery from "@/pages/member/MemberDelivery";
 import MemberOneOnOnePrep from "@/pages/member/MemberOneOnOnePrep";
