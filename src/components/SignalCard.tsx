@@ -1,14 +1,54 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import type { Signal } from '@/domain/types';
-import { AlertTriangle, AlertCircle, Info, CheckCircle, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { makeStyles, tokens, shorthands, mergeClasses } from '@fluentui/react-components';
+import { WarningRegular, InfoRegular, CheckmarkCircleRegular, ArrowRightRegular, ErrorCircleRegular } from '@fluentui/react-icons';
 
-const severityConfig = {
-  critical: { icon: AlertTriangle, color: 'text-logiq-rose', bg: 'bg-logiq-rose/10', border: 'border-logiq-rose/30' },
-  warning: { icon: AlertCircle, color: 'text-logiq-amber', bg: 'bg-logiq-amber/10', border: 'border-logiq-amber/30' },
-  info: { icon: Info, color: 'text-logiq-cyan', bg: 'bg-logiq-cyan/10', border: 'border-logiq-cyan/30' },
-  positive: { icon: CheckCircle, color: 'text-logiq-emerald', bg: 'bg-logiq-emerald/10', border: 'border-logiq-emerald/30' },
+const useStyles = makeStyles({
+  card: {
+    ...shorthands.padding('16px'),
+    ...shorthands.borderRadius('8px'),
+    backgroundColor: tokens.colorNeutralBackground1,
+    ...shorthands.border('1px', 'solid', tokens.colorNeutralStroke2),
+    borderLeftWidth: '4px',
+    cursor: 'pointer',
+    transition: 'background 150ms',
+    ':hover': { backgroundColor: tokens.colorNeutralBackground1Hover },
+  },
+  critical: { borderLeftColor: tokens.colorPaletteRedBorder1 },
+  warning: { borderLeftColor: tokens.colorPaletteYellowBorder1 },
+  info: { borderLeftColor: tokens.colorNeutralStroke1 },
+  positive: { borderLeftColor: tokens.colorPaletteGreenBorder1 },
+  unread: { boxShadow: `inset 0 0 0 1px ${tokens.colorBrandStroke1}` },
+  row: { display: 'flex', alignItems: 'flex-start', ...shorthands.gap('12px') },
+  iconBox: {
+    width: '32px', height: '32px', ...shorthands.borderRadius('6px'),
+    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+  },
+  criticalIcon: { backgroundColor: tokens.colorPaletteRedBackground1, color: tokens.colorPaletteRedForeground1 },
+  warningIcon: { backgroundColor: tokens.colorPaletteYellowBackground1, color: tokens.colorPaletteYellowForeground1 },
+  infoIcon: { backgroundColor: tokens.colorPaletteBlueBackground2, color: tokens.colorPaletteBlueForeground2 },
+  positiveIcon: { backgroundColor: tokens.colorPaletteGreenBackground1, color: tokens.colorPaletteGreenForeground1 },
+  content: { flex: 1, minWidth: 0 },
+  titleRow: { display: 'flex', alignItems: 'center', ...shorthands.gap('8px'), marginBottom: '4px' },
+  title: { fontSize: tokens.fontSizeBase300, fontWeight: tokens.fontWeightSemibold, color: tokens.colorNeutralForeground1 },
+  dot: { width: '8px', height: '8px', ...shorthands.borderRadius('50%'), backgroundColor: tokens.colorBrandBackground },
+  desc: { fontSize: tokens.fontSizeBase200, color: tokens.colorNeutralForeground3, lineHeight: tokens.lineHeightBase200 },
+  footer: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px' },
+  time: { fontSize: tokens.fontSizeBase100, color: tokens.colorNeutralForeground4 },
+  action: {
+    display: 'flex', alignItems: 'center', ...shorthands.gap('4px'),
+    fontSize: tokens.fontSizeBase100, fontWeight: tokens.fontWeightSemibold,
+    color: tokens.colorBrandForeground1, textDecoration: 'none',
+    ':hover': { textDecoration: 'underline' },
+  },
+});
+
+const severityIcons = {
+  critical: WarningRegular,
+  warning: ErrorCircleRegular,
+  info: InfoRegular,
+  positive: CheckmarkCircleRegular,
 };
 
 function getActionUrl(signal: Signal): string | null {
@@ -18,8 +58,8 @@ function getActionUrl(signal: Signal): string | null {
 }
 
 const SignalCard = ({ signal, index = 0 }: { signal: Signal; index?: number }) => {
-  const config = severityConfig[signal.severity];
-  const Icon = config.icon;
+  const styles = useStyles();
+  const Icon = severityIcons[signal.severity];
   const actionUrl = getActionUrl(signal);
 
   return (
@@ -27,27 +67,27 @@ const SignalCard = ({ signal, index = 0 }: { signal: Signal; index?: number }) =
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.08 }}
-      className={cn(
-        "glass rounded-xl p-4 border-l-4 hover:bg-card/80 transition-colors cursor-pointer",
-        config.border,
-        !signal.isRead && 'ring-1 ring-primary/20'
+      className={mergeClasses(
+        styles.card,
+        styles[signal.severity],
+        !signal.isRead && styles.unread,
       )}
     >
-      <div className="flex items-start gap-3">
-        <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5", config.bg)}>
-          <Icon className={cn("w-4 h-4", config.color)} />
+      <div className={styles.row}>
+        <div className={mergeClasses(styles.iconBox, styles[`${signal.severity}Icon`])}>
+          <Icon style={{ fontSize: 16 }} />
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="text-sm font-semibold text-foreground">{signal.title}</h4>
-            {!signal.isRead && <span className="w-2 h-2 rounded-full bg-primary signal-pulse" />}
+        <div className={styles.content}>
+          <div className={styles.titleRow}>
+            <span className={styles.title}>{signal.title}</span>
+            {!signal.isRead && <span className={mergeClasses(styles.dot, 'signal-pulse')} />}
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">{signal.description}</p>
-          <div className="flex items-center justify-between mt-3">
-            <span className="text-xs text-muted-foreground">{signal.timestamp}</span>
+          <p className={styles.desc}>{signal.description}</p>
+          <div className={styles.footer}>
+            <span className={styles.time}>{signal.timestamp}</span>
             {signal.actionLabel && actionUrl && (
-              <Link to={actionUrl} className="flex items-center gap-1 text-xs font-medium text-primary hover:underline">
-                {signal.actionLabel} <ArrowRight className="w-3 h-3" />
+              <Link to={actionUrl} className={styles.action}>
+                {signal.actionLabel} <ArrowRightRegular style={{ fontSize: 12 }} />
               </Link>
             )}
           </div>
