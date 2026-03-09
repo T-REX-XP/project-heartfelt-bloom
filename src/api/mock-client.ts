@@ -10,7 +10,7 @@ import {
   employees, teamLeadSignals, teamMemberSignals, teamLeadKPIs,
   teamSummary, alexConversationPrep, learningRecommendations,
   idpGoals, agents, employeeProjects, employeeFeedback,
-  employeeTraining, employeeRoleHistory, oneOnOneMeetings,
+  employeeTrainings, employeeRoleHistory,
 } from '@/mocks/data';
 
 const SIMULATED_DELAY_MS = 400;
