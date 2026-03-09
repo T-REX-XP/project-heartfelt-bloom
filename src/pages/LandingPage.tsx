@@ -89,9 +89,9 @@ const LandingPage = () => {
               LogIQ proactively surfaces risks, signals, and coaching — powered by 6 AI agents that monitor well-being, skills, motivation, retention, and delivery in real-time.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/demo">
+              <Link to="/login">
                 <Button size="lg" className="gradient-primary text-primary-foreground border-0 px-8 text-base glow-primary">
-                  Enter Live Demo <ArrowRight className="w-5 h-5 ml-2" />
+                  Get Started <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <a href="#features">
