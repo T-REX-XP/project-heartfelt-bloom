@@ -17,10 +17,17 @@ export default defineConfig(({ mode, command }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'scheduler'],
+    dedupe: ['react', 'react-dom', 'react/jsx-runtime', 'scheduler', 'use-sync-external-store'],
   },
   optimizeDeps: {
     exclude: ['@fluentui/react-components', '@fluentui/react-icons'],
-    include: ['scheduler', 'react', 'react-dom'],
+    include: [
+      'scheduler',
+      'react',
+      'react-dom',
+      'use-sync-external-store',
+      'use-sync-external-store/shim',
+      'use-sync-external-store/shim/with-selector',
+    ],
   },
 }));
