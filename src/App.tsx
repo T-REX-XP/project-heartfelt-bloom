@@ -9,7 +9,6 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import AppShell from "@/layouts/AppShell";
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
-
 import NotFound from "./pages/NotFound";
 
 // Lead pages
@@ -20,7 +19,7 @@ import EmployeeDetail from "@/pages/lead/EmployeeDetail";
 import ConversationPrep from "@/pages/lead/ConversationPrep";
 import LeadDelivery from "@/pages/lead/LeadDelivery";
 import LeadSkills from "@/pages/lead/LeadSkills";
-import OneOnOnePlanner from "@/pages/lead/OneOnOneimport OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
+import OneOnOnePlanner from "@/pages/lead/OneOnOnePlanner";
 
 // Member pages
 import MemberDashboard from "@/pages/member/MemberDashboard";
@@ -55,37 +54,37 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Public */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            
+          <BrowserRouter>
+            <Routes>
+              {/* Public */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
 
-            {/* Team Lead */}
-            <Route path="/lead/dashboard" element={<LeadLayout><LeadDashboard /></LeadLayout>} />
-            <Route path="/lead/wellbeing-risks" element={<LeadLayout><WellbeingRisks /></LeadLayout>} />
-            <Route path="/lead/team" element={<LeadLayout><LeadTeam /></LeadLayout>} />
-            <Route path="/lead/team/:employeeId" element={<LeadLayout><EmployeeDetail /></LeadLayout>} />
-            <Route path="/lead/conversation-prep/:employeeId" element={<LeadLayout><ConversationPrep /></LeadLayout>} />
-            <Route path="/lead/delivery" element={<LeadLayout><LeadDelivery /></LeadLayout>} />
-            <Route path="/lead/skills" element={<LeadLayout><LeadSkills /></LeadLayout>} />
-            <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /settings" element={Route path="/lead/copilot" element={<LeadLayout><C<LeadLayout><SettingsPage /></LeadLayout>} />
+              {/* Team Lead */}
+              <Route path="/lead/dashboard" element={<LeadLayout><LeadDashboard /></LeadLayout>} />
+              <Route path="/lead/wellbeing-risks" element={<LeadLayout><WellbeingRisks /></LeadLayout>} />
+              <Route path="/lead/team" element={<LeadLayout><LeadTeam /></LeadLayout>} />
+              <Route path="/lead/team/:employeeId" element={<LeadLayout><EmployeeDetail /></LeadLayout>} />
+              <Route path="/lead/conversation-prep/:employeeId" element={<LeadLayout><ConversationPrep /></LeadLayout>} />
+              <Route path="/lead/delivery" element={<LeadLayout><LeadDelivery /></LeadLayout>} />
+              <Route path="/lead/skills" element={<LeadLayout><LeadSkills /></LeadLayout>} />
+              <Route path="/lead/one-on-ones" element={<LeadLayout><OneOnOnePlanner /></LeadLayout>} />
+              <Route path="/lead/settings" element={<LeadLayout><SettingsPage /></LeadLayout>} />
 
-            {/* Team Member */}
-            <Route path="/member/dashboard" element={<MemberLayout><MemberDashboard /></MemberLayout>} />
-            <Route path="/member/signals" element={<MemberLayout><MemberSignals /></MemberLayout>} />
-            <Route path="/member/skills" element={<MemberLayout><MemberSkills /></MemberLayout>} />
-            <Route path="/member/learning" element={<MemberLayout><MemberLearning /></MemberLayout>} />
-            <Route path="/member/idp" element={<MemberLayout><MemberIDP /></MemberLayout>} />
-            <Route path="/member/delivery" element={<MemberLayout><MemberDelivery /></MemberLayout>} />
-            <Route path="/member/one-on-one-prep" element={<MemberLayout><MemberOneOnOnePrep /></MemberLayout>} />
-            <Route path="/member/coach" element={<MemberLayout><MemberCoach /></MemberLayout>} />
-            <Route path="/member/settings" element={<MemberLayout><SettingsPage /></MemberLayout>} />
+              {/* Team Member */}
+              <Route path="/member/dashboard" element={<MemberLayout><MemberDashboard /></MemberLayout>} />
+              <Route path="/member/signals" element={<MemberLayout><MemberSignals /></MemberLayout>} />
+              <Route path="/member/skills" element={<MemberLayout><MemberSkills /></MemberLayout>} />
+              <Route path="/member/learning" element={<MemberLayout><MemberLearning /></MemberLayout>} />
+              <Route path="/member/idp" element={<MemberLayout><MemberIDP /></MemberLayout>} />
+              <Route path="/member/delivery" element={<MemberLayout><MemberDelivery /></MemberLayout>} />
+              <Route path="/member/one-on-one-prep" element={<MemberLayout><MemberOneOnOnePrep /></MemberLayout>} />
+              <Route path="/member/coach" element={<MemberLayout><MemberCoach /></MemberLayout>} />
+              <Route path="/member/settings" element={<MemberLayout><SettingsPage /></MemberLayout>} />
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
     </ThemeProvider>
