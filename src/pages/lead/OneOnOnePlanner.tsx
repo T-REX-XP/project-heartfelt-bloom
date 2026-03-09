@@ -220,7 +220,7 @@ const OneOnOnePlanner = () => {
           <DialogBody>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 12 }}>
               <Dropdown placeholder="Select team member" value={employees.find(e => e.id === newEmployee)?.name || ''} onOptionSelect={(_, d) => setNewEmployee(d.optionValue || '')}>
-                {employees.map(e => <Option key={e.id} value={e.id}>{e.name} — {e.role}</Option>)}
+                {employees.map(e => <Option key={e.id} value={e.id} text={`${e.name} — ${e.role}`}>{e.name} — {e.role}</Option>)}
               </Dropdown>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <Input type="date" value={newDate} onChange={(_, d) => setNewDate(d.value)} />
